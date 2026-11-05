@@ -1,0 +1,42 @@
+{{/* The respawn header: the engine's document start (html_start), then a
+     white bar that stays on top - the mark (the theme's red ring, or the
+     site's logo: the "mark" setting) and the site's name, the header
+     region (the main menu, its current item underlined in the accent), a
+     search (the "search" setting; /search, as the engine's search block
+     sends it) and the account: a guest's links, a signed-in user's menu
+     (the engine's user_menu block). The engine's markup classes are kept
+     (site-header, site-account) so base.css and app.js work as in the
+     engine's look. The admin layout renders "header" too. */}}
+{{define "header"}}
+{{template "html_start" .}}
+
+<header class="site-header r-header" role="banner">
+    <div class="container site-header-inner">
+        <a class="site-branding" href="{{localURL "/"}}" rel="home">
+            {{if and (eq (themeSetting "mark") "logo") .siteLogoURI}}<img class="site-logo" src="{{.siteLogoURI}}" alt="" width="34" height="34">{{else}}<span class="r-mark" aria-hidden="true"></span>{{end}}
+            <span class="site-branding-text">
+                <span class="site-name">{{.siteName}}</span>
+            </span>
+        </a>
+        {{if regionHasBlocks "header" .}}
+        <div class="site-header-region">
+            {{template "region_blocks" (dict "Region" (region "header") "Ctx" .)}}
+        </div>
+        {{end}}
+        <div class="r-header-actions">
+            {{if themeSetting "search"}}
+            <form class="r-search" role="search" action="{{localURL "/search"}}" method="get">
+                <input type="search" name="q" aria-label="{{t "Search the site"}}" placeholder="{{t "Search the site"}}">
+            </form>
+            {{end}}
+            <nav class="site-account" aria-label="{{t "User menu"}}">
+                {{if .user}}
+                {{template "block_user_menu" .}}
+                {{else}}
+                <a href="/login" class="site-account-primary">{{t "Log in"}}</a>
+                {{end}}
+            </nav>
+        </div>
+    </div>
+</header>
+{{end}}

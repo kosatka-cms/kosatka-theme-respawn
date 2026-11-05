@@ -1,0 +1,1096 @@
+/* The respawn theme: a light portal - a white header, cards on light grey,
+   one accent colour (--respawn-accent, the theme's setting), a dark footer;
+   over the engine's base.css. It styles the engine's own markup, so every
+   list, card and page of any site gets the look: no field names of a
+   particular site are assumed. Field classes it reads: the field types
+   (item-field-image, item-field-list, item-field-taxonomy) and the builtin
+   View fields (title, content_type, author, created_at, view_count,
+   comment_count). A list field's options (fields/list.html) are badges
+   coloured in their order: list-value-1 the first option, and so on. */
+
+:root {
+    --respawn-accent: #d72638;
+    --r-accent-hover: color-mix(in srgb, var(--respawn-accent) 82%, #000);
+    --r-accent-ink: color-mix(in srgb, var(--respawn-accent) 88%, #000);
+    --r-accent-tint: color-mix(in srgb, var(--respawn-accent) 9%, #fff);
+    --r-ink: #1a1c21;
+    --r-muted: #5b6070;
+    --r-page: #f2f3f5;
+    --r-card: #ffffff;
+    --r-line: #e3e5ea;
+    --r-line-soft: #eef0f3;
+    --r-field: #f2f3f5;
+    --r-dark: #1a1c21;
+    --r-radius: 12px;
+    /* The options of a list field, in their order. */
+    --r-option-1: #6a3fd1;
+    --r-option-2: #1f9d55;
+    --r-option-3: #f2c14e;
+    --r-option-3-ink: #1a1c21;
+    --r-option-4: #6b7080;
+    --bs-body-bg: var(--r-page);
+    --bs-body-color: var(--r-ink);
+    --bs-secondary-color: var(--r-muted);
+    --bs-border-color: var(--r-line);
+    --bs-tertiary-bg: var(--r-field);
+    --bs-body-font-family: "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --bs-link-color: var(--r-accent-ink);
+    --bs-link-hover-color: var(--r-accent-hover);
+    /* The engine's components' accents (base.css, profile.css, …). */
+    --kosatka-accent: var(--respawn-accent);
+    --kosatka-radius: var(--r-radius);
+    --kosatka-shadow: none;
+    --kosatka-surface: var(--r-card);
+    --kosatka-tint: var(--r-accent-tint);
+    --kosatka-tint-strong: color-mix(in srgb, var(--respawn-accent) 18%, #fff);
+    --kosatka-line: var(--r-line);
+    --kosatka-link: var(--r-accent-ink);
+    --kosatka-highlight: var(--respawn-accent);
+    --kosatka-profile-header-bg: linear-gradient(135deg, var(--r-dark), var(--r-accent-hover));
+}
+
+/* An editor's text (TinyMCE: theme_editor_css on a .node-content body):
+   a field's white. */
+.mce-content-body {
+    margin: 1rem;
+    background: #fff;
+}
+
+body {
+    background: var(--r-page);
+}
+
+h1, h2, h3, h4,
+.site-name {
+    font-weight: 800;
+    letter-spacing: -.01em;
+}
+
+.container-content {
+    padding-top: 1.25rem;
+}
+
+.container-content h1 {
+    font-size: 2.125rem;
+    font-weight: 800;
+}
+
+/* Bootstrap in the accent, through its variables: square-ish buttons, the
+   primary and outline-primary in the accent, badges in the accent. */
+.btn {
+    --bs-btn-border-radius: 8px;
+    --bs-btn-font-weight: 600;
+    --bs-btn-focus-box-shadow: 0 0 0 .25rem color-mix(in srgb, var(--respawn-accent) 25%, transparent);
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--respawn-accent);
+    --bs-btn-border-color: var(--respawn-accent);
+    --bs-btn-color: #fff;
+    --bs-btn-hover-bg: var(--r-accent-hover);
+    --bs-btn-hover-border-color: var(--r-accent-hover);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-active-bg: var(--r-accent-hover);
+    --bs-btn-active-border-color: var(--r-accent-hover);
+    --bs-btn-active-color: #fff;
+    --bs-btn-disabled-bg: var(--respawn-accent);
+    --bs-btn-disabled-border-color: var(--respawn-accent);
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--r-accent-ink);
+    --bs-btn-border-color: var(--respawn-accent);
+    --bs-btn-hover-bg: var(--respawn-accent);
+    --bs-btn-hover-border-color: var(--respawn-accent);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-active-bg: var(--r-accent-hover);
+    --bs-btn-active-border-color: var(--r-accent-hover);
+    --bs-btn-active-color: #fff;
+    --bs-btn-disabled-color: var(--r-accent-ink);
+    --bs-btn-disabled-border-color: var(--respawn-accent);
+}
+
+.text-bg-primary {
+    background-color: var(--respawn-accent) !important;
+    color: #fff !important;
+}
+
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+    border-color: var(--respawn-accent);
+    box-shadow: 0 0 0 .2rem var(--r-accent-tint);
+}
+
+.form-check-input:checked {
+    border-color: var(--respawn-accent);
+    background-color: var(--respawn-accent);
+}
+
+::selection {
+    background: color-mix(in srgb, var(--respawn-accent) 25%, transparent);
+}
+
+:focus-visible {
+    outline: 2px solid var(--respawn-accent);
+    outline-offset: 2px;
+}
+
+/* Header: white, the menu's current item underlined in the accent. */
+.r-header {
+    border-bottom: 1px solid var(--r-line);
+    background: var(--r-card);
+}
+
+.r-header .site-header-inner {
+    min-height: 64px;
+    gap: .5rem 1.5rem;
+}
+
+.r-header .site-branding {
+    gap: .5rem;
+}
+
+.r-mark {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--respawn-accent);
+}
+
+.r-mark::before {
+    content: "";
+    width: 13px;
+    height: 13px;
+    border: 3px solid #fff;
+    border-right-color: transparent;
+    border-radius: 50%;
+}
+
+.r-header .site-logo {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+}
+
+.r-header .site-name {
+    color: var(--r-ink);
+    font-size: 1.375rem;
+    letter-spacing: -.02em;
+}
+
+.r-header .site-header-region {
+    flex: 1 1 auto;
+}
+
+.r-header .site-header-region .block-menu ul.menu {
+    gap: 0 .25rem;
+}
+
+.r-header .site-header-region .block-menu a {
+    display: inline-block;
+    padding: 1.25rem .625rem;
+    color: var(--r-ink);
+    font-size: .9375rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.r-header .site-header-region .block-menu a:hover {
+    color: var(--r-accent-ink);
+}
+
+.r-header .site-header-region .block-menu .active > a {
+    box-shadow: inset 0 -3px 0 var(--respawn-accent);
+}
+
+.r-header-actions {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-left: auto;
+}
+
+.r-header-actions .site-account {
+    margin-left: 0;
+}
+
+.r-search input {
+    width: 210px;
+    height: 38px;
+    padding: 0 .75rem;
+    border: 1px solid #d8dbe2;
+    border-radius: 8px;
+    background: var(--r-field);
+    color: var(--r-ink);
+    font: inherit;
+    font-size: .875rem;
+}
+
+.r-search input:focus {
+    border-color: var(--respawn-accent);
+    outline: none;
+    background: #fff;
+}
+
+.site-account .site-account-primary,
+.site-account .site-account-primary:hover {
+    display: inline-flex;
+    align-items: center;
+    height: 38px;
+    padding: 0 1rem;
+    border-radius: 8px;
+    background: var(--respawn-accent);
+    color: #fff;
+    font-weight: 600;
+}
+
+.site-account .site-account-primary:hover {
+    background: var(--r-accent-hover);
+}
+
+/* A signed-in user's menu (the engine's user_menu block, rendered for a
+   signed-in user only, so shown at once, not by app.js): the avatar and
+   the name; its panel under it. The header has no burger, so the menu
+   stays on a phone too, the name hidden. */
+/* Shown on a phone too: menu.css hides the desktop menu there. */
+.r-header .desktop-user-menu {
+    display: block !important;
+}
+
+.r-header .desktop-user-menu {
+    height: auto;
+    padding-right: 0;
+}
+
+.r-header .user-menu-toggle {
+    gap: .5rem;
+    padding: .25rem .5rem .25rem .25rem;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--r-ink);
+    font-weight: 600;
+}
+
+.r-header .user-menu-toggle:hover,
+.r-header .user-menu-toggle.active {
+    background: var(--r-field);
+}
+
+/* The name: the header's ink (the engine's menu.css paints it white for a
+   dark header). */
+.r-header .user-menu-dropdown .user-name {
+    max-width: 10rem;
+    color: inherit;
+}
+
+.r-header .user-avatar-small {
+    width: 32px;
+    height: 32px;
+    border: 0;
+}
+
+.r-header .user-dropdown-menu {
+    top: calc(100% + .5rem);
+    min-width: 250px;
+    padding: .375rem;
+    border: 1px solid var(--r-line);
+    border-radius: var(--r-radius);
+    background: var(--r-card);
+    box-shadow: 0 14px 34px rgba(26, 28, 33, .14);
+}
+
+.r-header .user-dropdown-menu .dropdown-item {
+    padding: .5rem .75rem;
+    border-radius: 8px;
+    color: var(--r-ink);
+}
+
+.r-header .user-dropdown-menu .dropdown-item:hover {
+    background: var(--r-field);
+}
+
+.r-header .user-dropdown-menu .dropdown-item .badge {
+    margin-left: auto !important;
+}
+
+/* A narrower screen: the menu and the search tighter, so they stay in
+   one row with the account. */
+@media (max-width: 1199.98px) {
+    .r-header .site-header-inner {
+        gap: .5rem 1rem;
+    }
+
+    .r-header .site-header-region .block-menu a {
+        padding-right: .4rem;
+        padding-left: .4rem;
+        font-size: .875rem;
+    }
+
+    .r-search input {
+        width: 9.5rem;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .r-header .site-header-region {
+        order: 3;
+        flex-basis: 100%;
+    }
+
+    .r-header .site-header-region .block-menu a {
+        padding: .5rem .625rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .r-search input {
+        width: 9rem;
+    }
+
+    .r-header .user-menu-dropdown .user-name {
+        display: none;
+    }
+}
+
+/* Breadcrumbs: small and muted. */
+.breadcrumb,
+.breadcrumbs {
+    font-size: .8125rem;
+}
+
+/* A list field's options: badges in the colours of their order. */
+.list-value {
+    display: inline-block;
+    padding: .125rem .5rem;
+    border-radius: 6px;
+    background: var(--respawn-accent);
+    color: #fff;
+    font-size: .75rem;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.list-value-1 {
+    background: var(--r-option-1);
+}
+
+.list-value-2 {
+    background: var(--r-option-2);
+}
+
+.list-value-3 {
+    background: var(--r-option-3);
+    color: var(--r-option-3-ink);
+}
+
+.list-value-4 {
+    background: var(--r-option-4);
+}
+
+.list-values {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: .375rem;
+}
+
+.list-value-sep {
+    display: none;
+}
+
+/* A View's exposed filters: a white card over the list, the fields and
+   buttons of one height. */
+.view-exposed-filters {
+    padding: .875rem 1rem;
+    border: 1px solid var(--r-line);
+    border-radius: var(--r-radius);
+    background: var(--r-card);
+}
+
+.view-exposed-filters .form-label {
+    margin-bottom: .25rem;
+    font-size: .8125rem;
+    font-weight: 600;
+}
+
+.view-exposed-filters .form-select,
+.view-exposed-filters .form-control {
+    height: 38px;
+    border-color: #d8dbe2;
+    border-radius: 8px;
+    font-size: .875rem;
+}
+
+.view-exposed-filters .btn {
+    height: 38px;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    font-size: .875rem;
+}
+
+.view-exposed-filters .btn-outline-secondary {
+    border-color: transparent;
+    color: var(--r-muted);
+}
+
+.view-exposed-filters .btn-outline-secondary:hover {
+    background: var(--r-field);
+    color: var(--r-ink);
+}
+
+/* Lists of content with pictures (the "list" style): rows - the picture on
+   the left, the fields beside it, the author, the date and the counters in
+   one muted line; the first row leads, the picture over the whole width.
+   A group's heading (a release calendar's month) over its rows. */
+.item-list:has(> .view-list-item .item-field-image) {
+    display: flex;
+    flex-direction: column;
+    gap: .875rem;
+}
+
+.item-list:has(> .view-list-item .item-field-image) > .view-list-item {
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+    align-content: flex-start;
+    gap: .25rem 1rem;
+    min-height: 152px;
+    padding: 1rem 1.25rem 1rem calc(240px + 1.25rem);
+    border: 1px solid var(--r-line);
+    border-radius: var(--r-radius);
+    background: var(--r-card);
+    box-shadow: none;
+    overflow: hidden;
+    transition: border-color .15s ease;
+}
+
+.item-list:has(> .view-list-item .item-field-image) > .view-list-item:hover {
+    border-color: color-mix(in srgb, var(--respawn-accent) 45%, var(--r-line));
+    transform: none;
+}
+
+.item-list:has(> .view-list-item .item-field-image) > .view-list-item > .item-field {
+    flex: 1 0 100%;
+    padding: 0;
+}
+
+.item-list:has(> .view-list-item .item-field-image) > .view-list-item > .item-field.item-field-image {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 240px;
+    margin: 0;
+}
+
+.item-list:has(> .view-list-item .item-field-image) > .view-list-item > .item-field-image a,
+.item-list:has(> .view-list-item .item-field-image) > .view-list-item > .item-field-image picture {
+    display: block;
+    height: 100%;
+}
+
+.item-list:has(> .view-list-item .item-field-image) > .view-list-item > .item-field-image img {
+    height: 100%;
+    aspect-ratio: auto;
+    object-fit: cover;
+}
+
+/* A sticky row ("at the top of lists") leads: the picture over the whole
+   width, a large title. */
+.item-list:has(> .view-list-item .item-field-image) > .view-list-item-sticky {
+    padding: 0 1.75rem 1.5rem;
+}
+
+.item-list:has(> .view-list-item .item-field-image) > .view-list-item-sticky > .item-field.item-field-image {
+    position: static;
+    width: auto;
+    margin: 0 -1.75rem .75rem;
+}
+
+.item-list:has(> .view-list-item .item-field-image) > .view-list-item-sticky > .item-field-image img {
+    aspect-ratio: 21 / 9;
+}
+
+.item-list:has(> .view-list-item .item-field-image) > .view-list-item-sticky .item-field-name-title a {
+    font-size: 1.875rem;
+    line-height: 1.15;
+}
+
+.item-list:has(> .view-list-item .item-field-image) > .view-group-heading {
+    margin: .75rem 0 0;
+    font-size: 1.25rem;
+}
+
+@media (max-width: 767.98px) {
+    .item-list:has(> .view-list-item .item-field-image) > .view-list-item {
+        padding: 0 1rem 1rem;
+    }
+
+    .item-list:has(> .view-list-item .item-field-image) > .view-list-item > .item-field.item-field-image {
+        position: static;
+        width: auto;
+        margin: 0 -1rem .75rem;
+    }
+
+    .item-list:has(> .view-list-item .item-field-image) > .view-list-item .item-field-image img {
+        aspect-ratio: 16 / 9;
+    }
+}
+
+/* Plain rows (a list without pictures: news, a sidebar list). */
+.view-list-item {
+    border-bottom-color: var(--r-line);
+}
+
+.view-list-item .item-field-name-title a,
+.view-list-item .item-field-text .item-field-link {
+    color: var(--r-ink);
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.3;
+    text-decoration: none;
+}
+
+.view-list-item .item-field-name-title a:hover,
+.list-grid-item .item-field-name-title a:hover {
+    color: var(--r-accent-ink);
+}
+
+/* The author: a small muted link, not a title. */
+.view-list-item .item-field-name-author .item-field-link,
+.list-grid-item .item-field-name-author .item-field-link {
+    color: var(--r-muted);
+    font-size: .8125rem;
+    font-weight: 600;
+}
+
+.view-list-item .item-field-name-author .item-field-link:hover,
+.list-grid-item .item-field-name-author .item-field-link:hover {
+    color: var(--r-accent-ink);
+}
+
+/* The content's type: a small label in the accent. */
+.view-list-item > .item-field.item-field-name-content_type,
+.view-list-item > .item-field.item-field-name-content_type .item-field-value,
+.list-grid-item > .item-field.item-field-name-content_type .item-field-value {
+    color: var(--r-accent-ink);
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+/* The author, the date and the counters: one muted line. */
+.view-list-item > .item-field-name-author,
+.view-list-item > .item-field-name-created_at,
+.view-list-item > .item-field-name-view_count,
+.view-list-item > .item-field-name-comment_count,
+.list-grid-item > .item-field-name-author,
+.list-grid-item > .item-field-name-created_at,
+.list-grid-item > .item-field-name-view_count,
+.list-grid-item > .item-field-name-comment_count {
+    flex: 0 0 auto !important;
+    order: 10;
+    color: var(--r-muted);
+    font-size: .8125rem;
+}
+
+.view-list-item .item-field-name-view_count .item-field-label,
+.view-list-item .item-field-name-comment_count .item-field-label,
+.list-grid-item .item-field-name-view_count .item-field-label,
+.list-grid-item .item-field-name-comment_count .item-field-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+}
+
+.view-list-item > .item-field-name-view_count,
+.view-list-item > .item-field-name-comment_count,
+.list-grid-item > .item-field-name-view_count,
+.list-grid-item > .item-field-name-comment_count {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+}
+
+.view-list-item .item-field-name-view_count::before,
+.view-list-item .item-field-name-comment_count::before,
+.list-grid-item .item-field-name-view_count::before,
+.list-grid-item .item-field-name-comment_count::before {
+    content: "";
+    width: 14px;
+    height: 14px;
+    background: currentColor;
+    -webkit-mask: var(--r-icon) center / contain no-repeat;
+    mask: var(--r-icon) center / contain no-repeat;
+}
+
+.item-field-name-view_count {
+    --r-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E");
+}
+
+.item-field-name-comment_count {
+    --r-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-6.4A8 8 0 1 1 21 12z'/%3E%3C/svg%3E");
+}
+
+/* Terms: grey pills. */
+.view-list-item .item-field-taxonomy > .item-field-value a,
+.list-grid-item .item-field-taxonomy > .item-field-value a,
+.item-characteristic a[href*="/"] {
+    text-decoration: none;
+}
+
+.view-list-item .item-field-taxonomy > .item-field-value,
+.list-grid-item .item-field-taxonomy > .item-field-value {
+    color: var(--r-muted);
+    font-size: .8125rem;
+}
+
+/* The grid style: white cards, the first list field's badge over the
+   picture. */
+.list-grid-item {
+    position: relative;
+    border-color: var(--r-line);
+    border-radius: var(--r-radius);
+    background: var(--r-card);
+    transition: border-color .15s ease;
+}
+
+.list-grid-item:hover {
+    border-color: color-mix(in srgb, var(--respawn-accent) 45%, var(--r-line));
+}
+
+.list-grid-item:has(> .item-field-image) > .item-field-list {
+    position: absolute;
+    top: .75rem;
+    left: .75rem;
+    padding: 0;
+}
+
+.list-grid-item > .item-field-title .item-field-link {
+    color: var(--r-ink);
+}
+
+/* Fields with a label in a list: the label muted. */
+.item-field-label {
+    color: var(--r-muted);
+    font-size: .8125rem;
+}
+
+/* The sidebar: white cards. */
+.sidebar .block {
+    padding: 1rem 1.125rem;
+    border: 1px solid var(--r-line);
+    border-radius: var(--r-radius);
+    background: var(--r-card);
+    box-shadow: none;
+}
+
+.sidebar .block h2,
+.sidebar .block .block-title,
+.sidebar h2:has(+ .block) {
+    font-size: 1.0625rem;
+    font-weight: 800;
+}
+
+/* A system block's title on top of its card (base.css): one card. */
+.sidebar h2:has(+ .block) {
+    margin-bottom: 0;
+    padding: 1rem 1.125rem .5rem;
+    border: 1px solid var(--r-line);
+    border-bottom: 0;
+    border-radius: var(--r-radius) var(--r-radius) 0 0;
+    background: var(--r-card);
+}
+
+.sidebar h2 + .block {
+    padding-top: 0;
+    border-top: 0;
+    border-radius: 0 0 var(--r-radius) var(--r-radius);
+}
+
+.sidebar .view-list-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: .125rem .75rem;
+    padding: .5rem 0;
+    border-bottom: 1px solid var(--r-line-soft);
+}
+
+.sidebar .view-list-item:last-child {
+    border-bottom: 0;
+}
+
+.sidebar .view-list-item .item-field-name-title a {
+    font-size: .9375rem;
+    font-weight: 600;
+}
+
+.sidebar .view-list-item > .item-field-date {
+    color: var(--r-muted);
+    font-size: .8125rem;
+}
+
+/* A list of links (the recent comments): dark, the accent on hover. */
+.sidebar .block .item-list li a {
+    color: var(--r-ink);
+    text-decoration: none;
+}
+
+.sidebar .block .item-list li a:hover {
+    color: var(--r-accent-ink);
+}
+
+/* A sidebar list with view counts is a top: its rows numbered. */
+.sidebar .item-list:has(.item-field-name-view_count) {
+    counter-reset: r-top;
+}
+
+.sidebar .item-list:has(.item-field-name-view_count) > .view-list-item {
+    position: relative;
+    padding-left: 1.75rem;
+    counter-increment: r-top;
+}
+
+.sidebar .item-list:has(.item-field-name-view_count) > .view-list-item::before {
+    content: counter(r-top);
+    position: absolute;
+    top: .5rem;
+    left: 0;
+    color: var(--respawn-accent);
+    font-size: 1.125rem;
+    font-weight: 800;
+}
+
+.sidebar .item-list:has(.item-field-name-view_count) > .view-list-item > .item-field-name-view_count {
+    flex-basis: 100%;
+}
+
+/* The search block and the header's: grey fields. */
+.search-form {
+    border: 1px solid var(--r-line);
+    border-radius: 8px;
+    background: var(--r-card);
+    box-shadow: none;
+}
+
+.search-form .search-btn {
+    border-radius: 6px;
+    background: var(--respawn-accent);
+    color: #fff;
+}
+
+/* The "Poll" block (the polls module's): the bars in the accent. */
+.poll-result-bar-bg {
+    border-radius: 999px;
+    background: var(--r-line-soft);
+}
+
+.poll-result-bar-fill {
+    border-radius: 999px;
+    background: var(--respawn-accent);
+}
+
+.sidebar .poll-block-question {
+    margin-bottom: .75rem;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.sidebar .poll-block-question a {
+    color: var(--r-ink);
+    text-decoration: none;
+}
+
+/* The random quote (the quotes module's block): a card with the accent's
+   line. */
+.sidebar .block-quotes {
+    margin-bottom: 1.25rem;
+    padding: 1rem 1.125rem;
+    border: 1px solid var(--r-line);
+    border-left: 4px solid var(--respawn-accent);
+    border-radius: var(--r-radius);
+    background: var(--r-card);
+}
+
+.sidebar .block-quotes .quote-text {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+.sidebar .block-quotes .quotes-author {
+    color: var(--r-muted);
+    font-size: .8125rem;
+}
+
+/* A tag cloud: grey pills. */
+.sidebar .tag-cloud a,
+.sidebar .block-tag-cloud a {
+    display: inline-block;
+    margin: 0 .25rem .375rem 0;
+    padding: .125rem .625rem;
+    border-radius: 999px;
+    background: var(--r-field);
+    color: var(--r-ink);
+    text-decoration: none;
+}
+
+/* A content page: a white card. */
+.content .node {
+    padding: 1.75rem 2rem 2rem;
+    border: 1px solid var(--r-line);
+    border-radius: var(--r-radius);
+    background: var(--r-card);
+}
+
+.content .node .node-title,
+.content .node h1 {
+    font-size: 2.375rem;
+    font-weight: 800;
+    line-height: 1.12;
+}
+
+.article-meta {
+    color: var(--r-muted);
+    font-size: .875rem;
+}
+
+/* A content page's picture: as wide as the page, no taller than a
+   screen's part (a tall cover keeps its shape). */
+.dynamic-field-image img,
+img.dynamic-field-image {
+    width: auto;
+    max-width: 100%;
+    max-height: 32rem;
+    border-radius: 10px;
+}
+
+/* A tall picture (a cover, a poster) leads its page: on the left, the
+   fields that follow it (the fact box) beside it, the rest under both. */
+@media (min-width: 576px) {
+    .dynamic-field-image-portrait:has(+ .item-characteristic) {
+        float: left;
+        width: min(40%, 280px);
+        margin: 0 1.5rem 1.25rem 0;
+    }
+
+    .dynamic-field-image-portrait:has(+ .item-characteristic) img {
+        width: 100%;
+        max-height: none;
+    }
+
+    .dynamic-field-image-portrait + .item-characteristic {
+        display: flow-root;
+        margin-top: 0;
+    }
+
+    .dynamic-field-image-portrait + .item-characteristic + * {
+        clear: both;
+    }
+}
+
+.node-content {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+}
+
+.node-content h2,
+.node-content h3 {
+    margin-top: 1.75rem;
+    font-weight: 800;
+}
+
+.node-content blockquote {
+    margin: 1.5rem 0;
+    padding: .25rem 0 .25rem 1.125rem;
+    border-left: 4px solid var(--respawn-accent);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+.node-content blockquote p:last-child {
+    margin-bottom: 0;
+}
+
+/* The fact box (the fields in lines): grey, the labels muted. */
+.item-characteristic {
+    border: 1px solid var(--r-line);
+    border-radius: var(--r-radius);
+    background: #fafbfc;
+}
+
+.item-characteristic .field-list {
+    color: var(--r-muted);
+    font-weight: 600;
+}
+
+.item-characteristic a[href] {
+    display: inline-block;
+    padding: .0625rem .5rem;
+    border-radius: 999px;
+    background: var(--r-field);
+    color: var(--r-ink);
+    font-size: .875rem;
+}
+
+.node-actions .action-link {
+    border-radius: 8px;
+    background: var(--r-card);
+}
+
+/* Comments: white cards. */
+.comment-wrapper .message {
+    border: 1px solid var(--r-line);
+    border-radius: var(--r-radius);
+    background: var(--r-card);
+    box-shadow: none;
+}
+
+.comment-wrapper .message-title .date,
+.comment-wrapper .message-title .reply-to {
+    color: var(--r-muted);
+    font-size: .8125rem;
+}
+
+/* Paging: the current page dark. */
+.pagination .pager a,
+.pagination .pager .pager-current {
+    border-radius: 8px;
+}
+
+.pagination .pager-current {
+    border-color: var(--r-dark);
+    background: var(--r-dark);
+    color: #fff;
+}
+
+/* Footer: dark. */
+.r-footer {
+    margin-top: 3rem;
+    padding: 1.75rem 0;
+    border-top: 0;
+    background: var(--r-dark);
+    color: #b9bdc8;
+    font-size: .875rem;
+}
+
+body:has(> .site-header) > .r-footer {
+    margin-top: auto;
+}
+
+.r-footer a {
+    color: #fff;
+}
+
+.r-footer-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: .75rem 2rem;
+}
+
+.r-footer-name strong {
+    color: #fff;
+}
+
+.r-footer .site-footer-region .block {
+    margin: 0;
+}
+
+.r-footer .site-footer-region ul.menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.r-footer .site-footer-region ul.menu ul {
+    display: none;
+}
+
+.r-footer .site-footer-region ul.menu a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.r-footer .site-footer-region ul.menu a:hover {
+    text-decoration: underline;
+}
+
+.r-footer-bottom {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #2c2f37;
+    color: #8a8f9c;
+}
+
+.r-footer-bottom .site-footer-credit {
+    color: #8a8f9c;
+}
+
+/* The forum (the forum module's tables): a card, the category's header
+   dark with the accent's line, the columns' header grey, white rows
+   ("body": the module's stylesheet comes after the theme's). */
+body .forum-table {
+    overflow: hidden;
+    border: 1px solid var(--r-line) !important;
+    border-radius: var(--r-radius);
+    color: var(--r-ink);
+}
+
+body .forum-table-wrap .forum-table-superheader {
+    border: 0;
+    background: var(--r-dark);
+    box-shadow: inset 4px 0 0 var(--respawn-accent);
+    text-shadow: none;
+}
+
+body .forum-table thead tr {
+    border: 0;
+    background: var(--r-field);
+    color: var(--r-muted);
+}
+
+body .forum-table thead tr a,
+body .forum-table thead tr a:visited,
+body .forum-table thead tr a:link {
+    color: var(--r-muted);
+}
+
+body .forum-table tr.odd,
+body .forum-table tr.even {
+    background: var(--r-card);
+}
+
+body .forum-pager .pager-current,
+body .forum-pager .pager a:hover,
+body #forum-comments .pager-current,
+body #forum-comments .pager a:hover {
+    background: var(--r-dark);
+}
+
+/* A node's galleries (the galleries module's): rounded previews. */
+.node-gallery .content-image-link img {
+    border-radius: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .item-list:has(> .view-list-item .item-field-image) > .view-list-item,
+    .list-grid-item {
+        transition: none;
+    }
+}

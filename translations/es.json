@@ -1,0 +1,16 @@
+{
+  "strings": {
+    "A light portal of news and reviews - a white header with the menu and a search, cards on light grey, a list field's options as coloured badges, a dark footer.": "Un portal claro de noticias y reseñas - una cabecera blanca con el menú y un buscador, tarjetas sobre gris claro, las opciones de un campo de lista como insignias de color, un pie oscuro.",
+    "A search in the header": "Buscador en la cabecera",
+    "Accent colour": "Color de acento",
+    "Respawn": "Respawn",
+    "The header's mark": "Marca de la cabecera",
+    "The site's logo": "Logotipo del sitio",
+    "The theme's ring": "Anillo del tema",
+    "cards": "tarjetas",
+    "light": "claro",
+    "portal": "portal",
+    "responsive": "adaptable",
+    "two-columns": "dos columnas"
+  }
+}

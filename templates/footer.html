@@ -1,0 +1,24 @@
+{{/* The respawn footer: dark, the site's name and slogan on the left, the
+     footer region (a menu in one row) on the right, the footer_bottom
+     region under them (the copyright block, the theme's - theme.yaml
+     "blocks"), then the engine's scripts and document end (html_scripts,
+     html_end). The admin layout renders "footer" too. */}}
+{{define "footer"}}
+<footer class="site-footer r-footer">
+    <div class="container">
+        <div class="r-footer-row">
+            <span class="r-footer-name"><strong>{{.siteName}}</strong>{{with .siteSlogan}} - {{.}}{{end}}</span>
+            {{if regionHasBlocks "footer" .}}
+            <div class="site-footer-region">
+                {{template "region_blocks" (dict "Region" (region "footer") "Ctx" .)}}
+            </div>
+            {{end}}
+        </div>
+        <div class="r-footer-bottom">
+            {{template "region_blocks" (dict "Region" (region "footer_bottom") "Ctx" .)}}
+        </div>
+    </div>
+</footer>
+{{template "html_scripts" .}}
+{{template "html_end" .}}
+{{end}}

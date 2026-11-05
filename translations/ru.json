@@ -1,0 +1,17 @@
+{
+  "contexts": {},
+  "strings": {
+    "A light portal of news and reviews - a white header with the menu and a search, cards on light grey, a list field's options as coloured badges, a dark footer.": "Светлый портал новостей и обзоров - белая шапка с меню и поиском, карточки на светло-сером, варианты поля-списка цветными плашками, тёмный подвал.",
+    "A search in the header": "Поиск в шапке",
+    "Accent colour": "Акцентный цвет",
+    "Respawn": "Респаун",
+    "The header's mark": "Знак в шапке",
+    "The site's logo": "Логотип сайта",
+    "The theme's ring": "Кольцо темы",
+    "cards": "карточки",
+    "light": "светлая",
+    "portal": "портал",
+    "responsive": "адаптивная",
+    "two-columns": "две колонки"
+  }
+}
