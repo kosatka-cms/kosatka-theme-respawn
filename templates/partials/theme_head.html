@@ -1,14 +1,13 @@
 {{/* The respawn theme's hooks (see the engine's partials/theme_head.html):
      theme_framework - Bootstrap 5.3 in its light scheme and the theme's
-     font (Golos Text, with Cyrillic); theme_head - the engine's base.css
+     font (css/fonts.css, the files in static/fonts: Golos Text, with
+     Cyrillic); theme_head - the engine's base.css
      with the theme's respawn.css over it; theme_editor_css - the same for
      the editors. */}}
 {{define "theme_framework"}}
     <script>document.documentElement.setAttribute("data-bs-theme","light")</script>
     <link rel="stylesheet" href="{{ staticCSS "bootstrap" }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="{{ themeCSS "fonts" }}">
 {{end}}
 {{define "theme_head"}}
     <link rel="stylesheet" href="{{ staticCSS "base" }}">
@@ -17,4 +16,4 @@
 {{/* The editors' text as the page's: Bootstrap, the font, base.css and
      respawn.css, then a subtheme's stylesheets (TinyMCE's content_css
      takes a comma-separated list). */}}
-{{define "theme_editor_css"}}{{ staticCSS "bootstrap" }},https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&display=swap,{{ staticCSS "base" }},{{ themeCSS "respawn" }}{{range themeStylesheets}},{{.}}{{end}}{{end}}
+{{define "theme_editor_css"}}{{ staticCSS "bootstrap" }},{{ themeCSS "fonts" }},{{ staticCSS "base" }},{{ themeCSS "respawn" }}{{range themeStylesheets}},{{.}}{{end}}{{end}}

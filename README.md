@@ -35,6 +35,12 @@ bottom*, *Inside content*, *Footer*, *Footer bottom line* - so blocks
 placed for another theme stay where they are. A new site gets the
 copyright block in *Footer bottom line*.
 
+## Fonts
+
+Golos Text, with Latin and Cyrillic. It comes with the theme
+(`static/fonts`, SIL Open Font License 1.1) and the site serves it: no
+requests to other servers.
+
 ## Translations
 
 The theme's own strings: English, Russian, German and Spanish
