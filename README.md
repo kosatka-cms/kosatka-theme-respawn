@@ -46,7 +46,7 @@ Russian (`demo/ru.yaml`): a game portal with news, reviews, videos,
 articles, players' blogs, game pages with ratings, a release calendar,
 a poll and a forum. Everything in it is made up - the games, the
 studios, the news and the people; its pictures are abstract, drawn for
-it, and come with the theme (`demo/images`). On a new site (Kosatka 0.1.6
+it, and come with the theme (`demo/images`). On a new site (Kosatka 0.1.7
 or newer):
 
 ```bash

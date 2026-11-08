@@ -1276,7 +1276,7 @@ views:
 blocks:
   - {region: sidebar, view: popular, title: Популярное, show_title: true}
   - {region: sidebar, view: upcoming, title: Скоро выйдут, show_title: true}
-  - {region: sidebar, plugin: last_comments, title: Обсуждают}
+  - {region: sidebar, plugin: last_comments, title: Обсуждают, show_title: true}
   - {region: sidebar, plugin: tag_cloud, vocabulary: genres, title: Жанры, show_title: true, config: {count: "12"}}
   - {region: sidebar, view: blogs_latest, title: Блоги игроков, show_title: true, visibility: homepage}
   - {region: sidebar, view: top_games, title: Лучшие игры, show_title: true, types: [game]}
