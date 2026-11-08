@@ -1,0 +1,1437 @@
+# Игровой портал: новости, обзоры, видео и страницы игр, календарь
+# релизов. Всё выдумано для демо - игры, студии, новости и люди;
+# картинки - собственные картинки темы (demo/images).
+
+site:
+  slogan: Новости, обзоры и видео об играх
+  front_page_view: home
+  # Ссылки модулей (форум, опрос, цитаты, форма) - в эти меню.
+  main_menu: main
+  footer_menu: footer
+
+users:
+  - pixel_kid
+  - retro_anna
+  - galaga_pro
+  - sofa_critic
+  - night_owl
+  - mkim
+  - speedrun_lena
+  - quest_master
+  - joystick_dad
+
+image_styles:
+  - name: game_cover
+    label: Обложка игры
+    width: 600
+    height: 800
+    mode: fill
+    anchor: focal
+    hidpi: true
+  - name: game_card
+    label: Карточка материала
+    width: 720
+    height: 405
+    mode: fill
+    anchor: focal
+    hidpi: true
+
+vocabularies:
+  - name: platforms
+    label: Платформы
+    path: platforms
+    terms:
+      - PC
+      - PlayStation 5
+      - PlayStation 4
+      - Xbox Series
+      - Xbox One
+      - Nintendo Switch
+      - name: Ретро
+        description: Приставки и компьютеры прошлых лет.
+  - name: genres
+    label: Жанры
+    path: genres
+    terms: [RPG, Экшен, Рогалик, Платформер, Стратегия, Симулятор, Приключение, Головоломка, Хоррор, Шутер, Гонки]
+  - name: topics
+    label: Темы новостей
+    path: topics
+    terms: [Индустрия, Железо, Анонсы, Обновления, Киберспорт]
+  - name: tags
+    label: Теги
+    path: tags
+    terms: [релизы, детективы, инди, Северный маяк, предзаказ, шутеры, портативные консоли, обновления, фестивали, демоверсии, уютные игры, ретро, железо, киберспорт, файтинги, гонки, трейлеры, рогалики, гайды, ностальгия, кооператив]
+
+field_storages:
+  - name: field_cover
+    type: image
+  - name: field_platforms
+    type: taxonomy
+    vocabulary: platforms
+    multiple: true
+  - name: field_genres
+    type: taxonomy
+    vocabulary: genres
+    multiple: true
+  - name: field_topic
+    type: taxonomy
+    vocabulary: topics
+  - name: field_release
+    type: date
+  - name: field_developer
+    type: text
+  - name: field_publisher
+    type: text
+  - name: field_requirements
+    type: text
+  - name: field_game
+    type: reference
+    target: [game]
+  - name: field_verdict
+    type: list
+    options:
+      - {value: masterpiece, label: "★ Шедевр"}
+      - {value: great, label: "✓ Отлично"}
+      - {value: fine, label: "≈ Нормально"}
+      - {value: miss, label: "✕ Мимо"}
+  - name: field_pros
+    type: text
+  - name: field_cons
+    type: text
+  - name: field_source
+    type: link
+  - name: field_duration
+    type: text
+  - name: field_chapters
+    type: text
+  - name: field_tags
+    type: taxonomy
+    vocabulary: tags
+    multiple: true
+
+content_types:
+  - name: game
+    label: Игра
+    description: "Страница игры: обложка, платформы, жанры, дата выхода и всё, что о ней написано."
+    path: games
+    comments: closed
+    fields:
+      - {storage: field_cover, label: Обложка, show_on_detail: true, detail_image_style: game_cover, list_image_style: game_cover, sort_order: 0, display_order: 0}
+      - {storage: field_release, label: Дата выхода, show_on_detail: true, show_label: true, date_format: medium, sort_order: 10, display_order: 10}
+      - {storage: field_platforms, label: Платформы, widget: checkboxes, show_on_detail: true, show_label: true, sort_order: 20, display_order: 20}
+      - {storage: field_genres, label: Жанры, widget: checkboxes, show_on_detail: true, show_label: true, sort_order: 30, display_order: 30}
+      - {storage: field_developer, label: Разработчик, show_on_detail: true, show_label: true, sort_order: 40, display_order: 40}
+      - {storage: field_publisher, label: Издатель, show_on_detail: true, show_label: true, sort_order: 50, display_order: 50}
+      - {storage: field_body, label: Об игре, widget: textarea, text_formats: [basic_html, plain_text], show_on_detail: true, renders_in_body: true, sort_order: 60, display_order: 60}
+      - {storage: field_requirements, label: Системные требования (PC), widget: textarea, text_formats: [basic_html, plain_text], show_on_detail: true, show_label: true, sort_order: 70, display_order: 70}
+  - name: review
+    label: Обзор
+    description: "Обзор игры с вердиктом, плюсами и минусами."
+    path: reviews
+    comments: open
+    show_submitted: true
+    show_view_count: true
+    promote: true
+    revisions: true
+    fields:
+      - {storage: field_game, label: Игра, widget: autocomplete, required: true, show_on_detail: true, show_label: true, sort_order: 0, display_order: 0}
+      - {storage: field_verdict, label: Вердикт, widget: select, required: true, show_on_detail: true, show_label: true, sort_order: 10, display_order: 5}
+      - {storage: field_platforms, label: Платформы, widget: checkboxes, show_on_detail: true, sort_order: 20, display_order: 6}
+      - {storage: field_image, label: Картинка, show_on_detail: true, detail_image_style: article_wide, list_image_style: game_card, sort_order: 30, display_order: 1}
+      - {storage: field_body, label: Текст, widget: textarea, text_formats: [basic_html, plain_text], show_on_detail: true, renders_in_body: true, sort_order: 40, display_order: 10}
+      - {storage: field_pros, label: Понравилось, widget: textarea, text_formats: [basic_html, plain_text], show_on_detail: true, show_label: true, sort_order: 50, display_order: 20}
+      - {storage: field_cons, label: Не понравилось, widget: textarea, text_formats: [basic_html, plain_text], show_on_detail: true, show_label: true, sort_order: 60, display_order: 30}
+  - name: news
+    label: Новость
+    description: "Короткая новость с источником."
+    path: news
+    comments: open
+    show_submitted: true
+    promote: true
+    fields:
+      - {storage: field_topic, label: Тема, widget: select, show_on_detail: true, sort_order: 0, display_order: 0}
+      - {storage: field_game, label: Игра, widget: autocomplete, show_on_detail: true, show_label: true, sort_order: 10, display_order: 30}
+      - {storage: field_image, label: Картинка, show_on_detail: true, detail_image_style: article_wide, list_image_style: game_card, sort_order: 20, display_order: 1}
+      - {storage: field_body, label: Текст, widget: textarea, text_formats: [basic_html, plain_text], show_on_detail: true, renders_in_body: true, sort_order: 30, display_order: 10}
+      - {storage: field_source, label: Источник, show_on_detail: true, show_label: true, sort_order: 40, display_order: 20}
+      - {storage: field_tags, label: Теги, widget: autocomplete, show_on_detail: true, show_label: true, sort_order: 50, display_order: 25}
+  - name: video
+    label: Видео
+    description: "Видео: прохождения, разборы, обзоры за десять минут."
+    path: video
+    comments: open
+    show_submitted: true
+    show_view_count: true
+    promote: true
+    fields:
+      - {storage: field_game, label: Игра, widget: autocomplete, show_on_detail: true, show_label: true, sort_order: 0, display_order: 30}
+      - {storage: field_image, label: Обложка, show_on_detail: true, detail_image_style: article_wide, list_image_style: game_card, sort_order: 10, display_order: 0}
+      - {storage: field_duration, label: Длительность, show_on_detail: true, show_label: true, sort_order: 20, display_order: 5}
+      - {storage: field_body, label: Описание, widget: textarea, text_formats: [basic_html, plain_text], show_on_detail: true, renders_in_body: true, sort_order: 30, display_order: 10}
+      - {storage: field_chapters, label: Главы, widget: textarea, text_formats: [basic_html, plain_text], show_on_detail: true, show_label: true, sort_order: 40, display_order: 20}
+  - name: blog
+    label: Запись в блоге
+    description: "Запись в блоге игрока: впечатления, истории, гайды. Пишут зарегистрированные пользователи."
+    path: blogs
+    comments: open
+    show_submitted: true
+    show_view_count: true
+    fields:
+      - {storage: field_image, label: Картинка, show_on_detail: true, detail_image_style: article_wide, list_image_style: game_card, sort_order: 0, display_order: 0}
+      - {storage: field_body, label: Текст, widget: textarea, text_formats: [basic_html, plain_text], show_on_detail: true, renders_in_body: true, sort_order: 10, display_order: 10}
+      - {storage: field_game, label: Игра, widget: autocomplete, show_on_detail: true, show_label: true, sort_order: 20, display_order: 20}
+      - {storage: field_tags, label: Теги, widget: autocomplete, show_on_detail: true, show_label: true, sort_order: 30, display_order: 30}
+
+nodes:
+  # Игры - все выдуманы.
+  - key: ember_halls
+    type: game
+    title: Ember Halls
+    ago: 400d
+    views: 5400
+    fields:
+      field_cover: {file: images/game-ember-halls.webp}
+      field_release: 2020-09-17
+      field_platforms: [PC, Nintendo Switch, PlayStation 5, PlayStation 4, Xbox Series, Xbox One]
+      field_genres: [Рогалик, Экшен]
+      field_developer: Kiln Games
+      field_publisher: Kiln Games
+      field_body: |
+        <p>Наследник сгоревшего королевства раз за разом пытается выбраться из его пылающих залов. Каждая попытка - новый маршрут через четыре этажа огня, благословения древних духов очага и разговоры с домочадцами, которые помнят каждую вашу смерть.</p>
+      field_requirements: |
+        <ul><li>Система: 64-битная</li><li>Процессор: двухъядерный, 2,4 ГГц</li><li>Память: 4 ГБ</li><li>Видеокарта: 1 ГБ видеопамяти, DirectX 10</li><li>Место: 15 ГБ</li></ul>
+  - key: wild_hand
+    type: game
+    title: Wild Hand
+    ago: 300d
+    views: 6100
+    fields:
+      field_cover: {file: images/game-wild-hand.webp}
+      field_release: 2024-02-20
+      field_platforms: [PC, Nintendo Switch, PlayStation 5, PlayStation 4, Xbox Series, Xbox One]
+      field_genres: [Рогалик, Стратегия]
+      field_developer: Lone Ante
+      field_publisher: Paper Crane
+      field_body: |
+        <p>Покер, в котором можно жульничать - и нужно. Собирайте комбинации, покупайте дикие карты, меняющие правила, и переживите все раунды, пока колода не превратилась в машину для очков.</p>
+      field_requirements: |
+        <ul><li>Процессор: любой двухъядерный</li><li>Память: 1 ГБ</li><li>Видеокарта: с поддержкой OpenGL 2.1</li><li>Место: 150 МБ</li></ul>
+  - key: lantern_deep
+    type: game
+    title: Lantern Deep
+    ago: 500d
+    views: 4200
+    fields:
+      field_cover: {file: images/game-lantern-deep.webp}
+      field_release: 2017-02-24
+      field_platforms: [PC, Nintendo Switch, PlayStation 4, Xbox One]
+      field_genres: [Платформер, Экшен]
+      field_developer: Moss & Mortar
+      field_publisher: Moss & Mortar
+      field_body: |
+        <p>Маленький фонарщик спускается в погребённое королевство мха и кристаллов. Огромная связанная карта, строгие бои и мир, который рассказывает свою историю без слов.</p>
+  - key: willow_acres
+    type: game
+    title: Willow Acres
+    ago: 520d
+    views: 3900
+    fields:
+      field_cover: {file: images/game-willow-acres.webp}
+      field_release: 2016-02-26
+      field_platforms: [PC, Nintendo Switch, PlayStation 4, Xbox One]
+      field_genres: [Симулятор]
+      field_developer: Barnlight Games
+      field_publisher: Barnlight Games
+      field_body: |
+        <p>Тётина ферма, заросшая сорняками, городок со своими жителями и шахта под холмом. Сажайте, ловите рыбу, заводите друзей - в своём темпе.</p>
+  - key: clockwork_crown
+    type: game
+    title: Clockwork Crown
+    ago: 600d
+    views: 2100
+    fields:
+      field_cover: {file: images/game-clockwork-crown.webp}
+      field_release: 1995-03-11
+      field_platforms: [Ретро]
+      field_genres: [RPG]
+      field_developer: Quill Soft
+      field_publisher: Quill Soft
+      field_body: |
+        <p>Классическая ролевая игра девяностых о путешествиях во времени: от каменного века до конца света. Бои прямо на карте мира и больше десятка концовок.</p>
+  - key: star_vault
+    type: game
+    title: Star Vault
+    ago: 610d
+    views: 1750
+    fields:
+      field_cover: {file: images/game-star-vault.webp}
+      field_release: 1994-03-19
+      field_platforms: [Ретро]
+      field_genres: [Платформер, Экшен]
+      field_developer: Orbit Works
+      field_publisher: Orbit Works
+      field_body: |
+        <p>Охотница за головами возвращается на пещерную планету за украденным образцом. Одна из игр, задавших правила целого жанра: одна большая карта, способности, открывающие новые пути, и почти никаких подсказок.</p>
+  - key: summit_line
+    type: game
+    title: Summit Line
+    ago: 450d
+    views: 3300
+    fields:
+      field_cover: {file: images/game-summit-line.webp}
+      field_release: 2018-01-25
+      field_platforms: [PC, Nintendo Switch, PlayStation 4, Xbox One]
+      field_genres: [Платформер]
+      field_developer: Small Peak Games
+      field_publisher: Small Peak Games
+      field_body: |
+        <p>Юная альпинистка поднимается на одинокую гору - и спорит по дороге с собственными сомнениями. Точный платформер из сотен коротких экранов, где смерть стоит секунду, а режим помощи позволяет настроить сложность под себя.</p>
+      field_requirements: |
+        <ul><li>Процессор: Intel Core i3 M380</li><li>Память: 2 ГБ</li><li>Видеокарта: Intel HD 4000</li><li>Место: 1,2 ГБ</li></ul>
+  - key: rain_precinct
+    type: game
+    title: Rain Precinct
+    ago: 420d
+    views: 2900
+    fields:
+      field_cover: {file: images/game-rain-precinct.webp}
+      field_release: 2019-10-15
+      field_platforms: [PC, PlayStation 5, PlayStation 4, Xbox Series, Xbox One, Nintendo Switch]
+      field_genres: [RPG]
+      field_developer: Grey Coat Studio
+      field_publisher: Grey Coat Studio
+      field_body: |
+        <p>Детектив просыпается в разгромленном номере отеля и не помнит даже своего имени. Ролевая игра без боёв: дюжина голосов спорит у вас в голове, а расследование убийства превращается в разговор о городе, памяти и стыде.</p>
+  - key: orbit_loop
+    type: game
+    title: Orbit Loop
+    ago: 380d
+    views: 3100
+    fields:
+      field_cover: {file: images/game-orbit-loop.webp}
+      field_release: 2019-05-28
+      field_platforms: [PC, PlayStation 5, PlayStation 4, Xbox Series, Xbox One, Nintendo Switch]
+      field_genres: [Приключение, Головоломка]
+      field_developer: Pale Comet
+      field_publisher: Lumen Interactive
+      field_body: |
+        <p>Маленькая солнечная система, которая гибнет каждые двадцать минут. Единственное, что сохраняется между петлями, - то, что вы узнали. Исследуйте планеты и разгадайте, что здесь случилось.</p>
+  - key: card_tower
+    type: game
+    title: Card Tower
+    ago: 360d
+    views: 2400
+    fields:
+      field_cover: {file: images/game-card-tower.webp}
+      field_release: 2019-01-23
+      field_platforms: [PC, Nintendo Switch, PlayStation 4, Xbox One]
+      field_genres: [Рогалик, Стратегия]
+      field_developer: Tall Stack
+      field_publisher: Tall Stack
+      field_body: |
+        <p>Карточная игра, в которой колода растёт с каждым боем. Поднимитесь на башню, выбирая путь по карте этажей, реликвии и карты, - и постарайтесь не проиграть из-за одной жадной покупки.</p>
+  - key: silent_mariner
+    type: game
+    title: The Silent Mariner
+    ago: 340d
+    views: 1980
+    fields:
+      field_cover: {file: images/game-silent-mariner.webp}
+      field_release: 2018-10-18
+      field_platforms: [PC, Nintendo Switch, PlayStation 4, Xbox One]
+      field_genres: [Головоломка, Приключение]
+      field_developer: Harbour Ink
+      field_publisher: Harbour Ink
+      field_body: |
+        <p>1811 год. Торговый бриг, пропавший много лет назад, приходит в порт без единой души на борту. Остались лишь разорванный судовой журнал и альбом зарисовок: восстановите, кто был в команде и что стало с каждым.</p>
+  - key: gates_of_arlen
+    type: game
+    title: Gates of Arlen
+    ago: 200d
+    views: 4700
+    fields:
+      field_cover: {file: images/game-gates-of-arlen.webp}
+      field_release: 2023-08-03
+      field_platforms: [PC, PlayStation 5, Xbox Series]
+      field_genres: [RPG, Стратегия]
+      field_developer: Tallow Studios
+      field_publisher: Tallow Studios
+      field_body: |
+        <p>Ролевая игра по правилам настольной игры. Пошаговые бои, где можно столкнуть врага с моста или поджечь разлитое масло, и спутники, у каждого из которых своя история и своё мнение о ваших решениях.</p>
+      field_requirements: |
+        <ul><li>Система: Windows 10, 64-битная</li><li>Процессор: Intel i5-4690 или AMD FX 8350</li><li>Память: 8 ГБ</li><li>Видеокарта: GTX 970 или RX 480, 4 ГБ</li><li>Место: 150 ГБ, SSD</li></ul>
+  - key: ashen_throne
+    type: game
+    title: Ashen Throne
+    ago: 260d
+    views: 5200
+    fields:
+      field_cover: {file: images/game-ashen-throne.webp}
+      field_release: 2022-02-25
+      field_platforms: [PC, PlayStation 5, PlayStation 4, Xbox Series, Xbox One]
+      field_genres: [RPG, Экшен]
+      field_developer: Grey Ember
+      field_publisher: Northgate Entertainment
+      field_body: |
+        <p>Открытый мир, где за каждым холмом - крепость, катакомбы или босс, к которому вы пока не готовы. Можно уйти и вернуться позже: игра почти никогда не запрещает идти, куда хочется.</p>
+  - key: shifting_keep
+    type: game
+    title: Shifting Keep
+    ago: 330d
+    views: 1640
+    fields:
+      field_cover: {file: images/game-shifting-keep.webp}
+      field_release: 2018-08-07
+      field_platforms: [PC, Nintendo Switch, PlayStation 4, Xbox One]
+      field_genres: [Рогалик, Платформер, Экшен]
+      field_developer: Iron Pail
+      field_publisher: Iron Pail
+      field_body: |
+        <p>Безымянный узник просыпается в островной крепости и пробивается к выходу. Быстрые бои, сотни видов оружия и залы, которые перестраиваются при каждой попытке.</p>
+  - key: neon_courier
+    type: game
+    title: Неоновый курьер
+    ago: 70d
+    views: 1210
+    fields:
+      field_cover: {file: images/game-neon-courier.webp}
+      field_release: -30d
+      field_platforms: [PC, PlayStation 5, Xbox Series]
+      field_genres: [Экшен, Гонки]
+      field_developer: Студия "Ночной трамвай"
+      field_publisher: Студия "Ночной трамвай"
+      field_body: |
+        <p>Курьер на электросамокате развозит посылки по неоновому мегаполису будущего. Доставка на время, погони с конкурентами и город, который меняется от заказа к заказу.</p>
+  - key: subway_2049
+    type: game
+    title: Подземка 2049
+    ago: 30d
+    views: 520
+    fields:
+      field_cover: {file: images/game-subway-2049.webp}
+      field_release: +5d
+      field_platforms: [PC, Xbox Series]
+      field_genres: [Шутер, Хоррор]
+      field_developer: Tunnel Vision Games
+      field_publisher: Tunnel Vision Games
+      field_body: |
+        <p>Шутер в заброшенном метро огромного города: фонарь, три патрона и шорохи за поворотом. Станции связаны в одну сеть, и маршрут через неё каждый выбирает сам.</p>
+  - key: deep_harbor
+    type: game
+    title: Глубокая гавань
+    ago: 60d
+    views: 870
+    fields:
+      field_cover: {file: images/game-deep-harbor.webp}
+      field_release: +12d
+      field_platforms: [PC, PlayStation 5]
+      field_genres: [Приключение, Хоррор]
+      field_developer: Студия "Северный маяк"
+      field_publisher: Студия "Северный маяк"
+      field_body: |
+        <p>Детектив о смотрителе портового маяка, где каждую ночь пропадают корабли. Улики собирают по звукам: шорохам, гудкам и голосам по радио.</p>
+  - key: sky_farm
+    type: game
+    title: Ферма на облаках
+    ago: 45d
+    views: 640
+    fields:
+      field_cover: {file: images/game-sky-farm.webp}
+      field_release: +40d
+      field_platforms: [Nintendo Switch, PC]
+      field_genres: [Симулятор]
+      field_developer: Studio Cumulus
+      field_publisher: Studio Cumulus
+      field_body: |
+        <p>Уютная ферма на островах в небе: грядки на облаках, ветряные мельницы и почтовые воздушные змеи.</p>
+  - key: last_route
+    type: game
+    title: Последний маршрут
+    ago: 20d
+    views: 410
+    fields:
+      field_cover: {file: images/game-last-route.webp}
+      field_release: +75d
+      field_platforms: [PC, PlayStation 5, Xbox Series]
+      field_genres: [Гонки]
+      field_developer: Студия "Ночной трамвай"
+      field_publisher: Студия "Ночной трамвай"
+      field_body: |
+        <p>Ночные гонки по пустому городу на последнем трамвае, автобусе и такси. Новая игра авторов "Неонового курьера".</p>
+
+  # Обзоры.
+  - key: review_wild_hand
+    type: review
+    title: "Обзор Wild Hand: покер, от которого невозможно оторваться"
+    author: sofa_critic
+    sticky: true
+    ago: 2d
+    views: 3120
+    fields:
+      field_game: wild_hand
+      field_verdict: masterpiece
+      field_platforms: [PC, Nintendo Switch]
+      field_image: {file: images/review-wild-hand.webp}
+      field_body: |
+        <p>Wild Hand начинается как обычный покер и за полчаса превращается в бухгалтерию безумия: множители умножаются на множители, а дикая карта, которая казалась мусором, вдруг делает из пары двоек миллион очков.</p>
+        <h2>Правила, которые хочется ломать</h2>
+        <p>Каждый раунд - три стола, последний с условием, меняющим всё: то карты одной масти не считаются, то руку нельзя менять. Подстраиваться под них - главное удовольствие игры.</p>
+        <p>Удивительно, сколько глубины помещается в пять карт. После десятка забегов замечаешь не масти, а вероятности, - и ловишь себя на мысли, что считаешь колоду в метро.</p>
+      field_pros: |
+        <ul><li>Простые правила и огромная глубина</li><li>Сотни диких карт, меняющих стратегию</li><li>Забег на полчаса - идеально для перерывов</li></ul>
+      field_cons: |
+        <ul><li>Высокие ставки зависят от удачи</li><li>Музыка надоедает к сотому забегу</li></ul>
+    comments:
+      - author: pixel_kid
+        body: Купил вечером, лёг в четыре утра. Предупреждать надо!
+        replies:
+          - author: sofa_critic
+            body: Мы предупреждали - в первом абзаце.
+      - author: mkim
+        body: Какая колода лучше для начала?
+        replies:
+          - author: galaga_pro
+            body: Полосатая - лишний сброс здорово выручает.
+          - author: quest_master
+            body: А я бы начал с простой, лишняя рука прощает ошибки.
+      - author: joystick_dad
+        body: Играем с сыном по очереди, один забег - один ход. Лучшая настольная игра, которая не настольная.
+  - key: review_ember_halls
+    type: review
+    title: "Ember Halls: почему смерть здесь - только начало"
+    author: retro_anna
+    ago: 9d
+    views: 2480
+    fields:
+      field_game: ember_halls
+      field_verdict: masterpiece
+      field_platforms: [PC, Nintendo Switch]
+      field_image: {file: images/review-ember-halls.webp}
+      field_body: |
+        <p>В большинстве рогаликов смерть - наказание. В Ember Halls это продолжение сюжета: вернувшись к очагу, наследник узнаёт что-то новое, а домочадцы реагируют на то, как именно он погиб.</p>
+        <p>Бои быстрые и читаемые, а благословения духов складываются в сборки, которые хочется пробовать снова и снова. Озвучка и музыка - отдельное удовольствие.</p>
+      field_pros: |
+        <ul><li>Сюжет, который движется вместе с забегами</li><li>Отточенная боевая система</li><li>Лучшая музыка в жанре</li></ul>
+      field_cons: |
+        <ul><li>Под конец биомы становятся предсказуемыми</li></ul>
+    comments:
+      - author: night_owl
+        body: Прошёл тридцать раз, и до сих пор встречаются новые реплики.
+      - author: speedrun_lena
+        body: Лучший рогалик для того, кто рогалики не любит. Проверено на трёх друзьях.
+  - key: review_willow_acres
+    type: review
+    title: "Willow Acres спустя годы: всё ещё лучшая ферма"
+    author: mkim
+    ago: 20d
+    views: 1530
+    fields:
+      field_game: willow_acres
+      field_verdict: great
+      field_platforms: [Nintendo Switch]
+      field_image: {file: images/review-willow-acres.webp}
+      field_body: |
+        <p>Обновления превратили скромную ферму в огромную игру, но главное осталось: никуда не нужно спешить. Утро начинается с полива, вечер заканчивается у костра в городке.</p>
+        <p>Кооператив добавил игре второе дыхание: один ловит рыбу, другой копает в шахте, третий спорит, где ставить курятник.</p>
+      field_pros: |
+        <ul><li>Спокойный темп и множество занятий</li><li>Кооператив на четверых</li></ul>
+      field_cons: |
+        <ul><li>Первые сезоны тянутся медленно</li></ul>
+  - key: review_summit_line
+    type: review
+    title: "Summit Line: платформер, который умеет сочувствовать"
+    author: speedrun_lena
+    ago: 6d
+    views: 1960
+    fields:
+      field_game: summit_line
+      field_verdict: masterpiece
+      field_platforms: [PC, Nintendo Switch]
+      field_image: {file: images/review-summit-line.webp}
+      field_body: |
+        <p>Summit Line требует точности до кадра - и при этом не наказывает. Каждый экран - маленькая задача, смерть возвращает в его начало за секунду, а счётчик смертей в конце главы выглядит не упрёком, а медалью.</p>
+        <h2>Гора как метафора</h2>
+        <p>История альпинистки и её сомнений рассказана без нравоучений. Механика и сюжет говорят одно и то же: подниматься тяжело, но можно, и помощь просить не стыдно - для этого в игре есть режим помощи.</p>
+      field_pros: |
+        <ul><li>Безупречное управление</li><li>Честная, но высокая сложность</li><li>Трогательная история и великолепная музыка</li></ul>
+      field_cons: |
+        <ul><li>Дополнительные уровни - только для самых упорных</li></ul>
+    comments:
+      - author: pixel_kid
+        body: Восьмая глава сломала мне два геймпада. Ни о чём не жалею.
+        replies:
+          - author: speedrun_lena
+            body: Это ещё не все перья!
+  - key: review_rain_precinct
+    type: review
+    title: "Rain Precinct: ролевая игра, где главный враг - вы сами"
+    author: quest_master
+    ago: 14d
+    views: 1710
+    fields:
+      field_game: rain_precinct
+      field_verdict: great
+      field_platforms: [PC]
+      field_image: {file: images/review-rain-precinct.webp}
+      field_body: |
+        <p>В Rain Precinct нет боёв, зато есть дюжина голосов в голове детектива. Рассудок подсказывает версию, Бравада советует соврать, Тяга просит выпить - и каждый из них может оказаться прав.</p>
+        <p>Это игра, которую читают. Текста много, и он отличный: смешной, горький и неожиданно человечный. Провалить проверку здесь часто интереснее, чем пройти.</p>
+      field_pros: |
+        <ul><li>Лучшие тексты в жанре</li><li>Провал - тоже история</li><li>Город, в который веришь</li></ul>
+      field_cons: |
+        <ul><li>Медленное начало</li><li>Мало действия для тех, кто ждёт сражений</li></ul>
+  - key: review_orbit_loop
+    type: review
+    title: "Orbit Loop: игра, которую можно пройти только один раз"
+    author: night_owl
+    ago: 11d
+    views: 2050
+    fields:
+      field_game: orbit_loop
+      field_verdict: masterpiece
+      field_platforms: [PC, PlayStation 5]
+      field_image: {file: images/review-orbit-loop.webp}
+      field_body: |
+        <p>В Orbit Loop нет новых способностей, оружия или опыта. Всё, что вы получаете, - знание. Поэтому о ней так трудно писать: любая подробность отнимает у читателя открытие.</p>
+        <p>Скажем только, что двадцать минут - это очень много, если знать, куда лететь. И что за латаным-перелатаным кораблём стоит одна из лучших историй в играх.</p>
+      field_pros: |
+        <ul><li>Открытия, которые делаете вы сами</li><li>Каждая планета - отдельная головоломка</li><li>Финал, который запомнится</li></ul>
+      field_cons: |
+        <ul><li>Управление кораблём поначалу сопротивляется</li></ul>
+    comments:
+      - author: retro_anna
+        body: Спасибо, что без спойлеров. Пошла покупать.
+  - key: review_card_tower
+    type: review
+    title: "Card Tower: колода, которая строит вас"
+    author: galaga_pro
+    ago: 26d
+    views: 1180
+    fields:
+      field_game: card_tower
+      field_verdict: great
+      field_platforms: [PC]
+      field_image: {file: images/review-card-tower.webp}
+      field_body: |
+        <p>Главное умение в Card Tower - отказываться. Не брать карту, которая выглядит сильной, не идти к сундуку, если на пути элитный враг. Хорошая колода - тонкая колода.</p>
+        <p>Четыре персонажа играются совсем по-разному, а подъёмы сложности дают повод возвращаться годами.</p>
+      field_pros: |
+        <ul><li>Ясные правила и честный случай</li><li>Четыре непохожих персонажа</li></ul>
+      field_cons: |
+        <ul><li>Скромная графика</li></ul>
+  - key: review_neon_courier
+    type: review
+    title: "\"Неоновый курьер\": красиво, быстро и пусто"
+    author: sofa_critic
+    ago: 25d
+    views: 1420
+    fields:
+      field_game: neon_courier
+      field_verdict: miss
+      field_platforms: [PC]
+      field_image: {file: images/review-neon-courier.webp}
+      field_body: |
+        <p>Первый час "Неонового курьера" обещает многое: светящиеся улицы, музыка из ночного радио, самокат, которым приятно управлять. Ко второму часу понимаешь, что заказы повторяются, а город за неоном пуст.</p>
+        <p>Погони с конкурентами быстро надоедают, а сюжет заканчивается ровно тогда, когда становится интересным. Жаль: основа у игры хорошая.</p>
+      field_pros: |
+        <ul><li>Стиль и музыка</li><li>Приятное управление</li></ul>
+      field_cons: |
+        <ul><li>Однообразные заказы</li><li>Пустой открытый мир</li><li>Короткий сюжет</li></ul>
+    comments:
+      - author: joystick_dad
+        body: Сыну понравилось, но он и от доставки пиццы в реальности в восторге.
+      - author: night_owl
+        body: Подожду скидки и пары патчей.
+        replies:
+          - author: galaga_pro
+            body: Патч уже вышел, про него новость.
+  - key: review_shifting_keep
+    type: review
+    title: "Shifting Keep: рогалик для тех, кто любит драться"
+    author: pixel_kid
+    ago: 33d
+    views: 990
+    fields:
+      field_game: shifting_keep
+      field_verdict: fine
+      field_platforms: [Nintendo Switch]
+      field_image: {file: images/review-shifting-keep.webp}
+      field_body: |
+        <p>Бои в Shifting Keep - одни из лучших в жанре: быстрые, отзывчивые, с сотнями видов оружия. Но первые биомы приходится проходить так часто, что к двадцатому забегу они превращаются в рутину.</p>
+      field_pros: |
+        <ul><li>Отличные бои</li><li>Много оружия и сборок</li></ul>
+      field_cons: |
+        <ul><li>Однообразное начало каждого забега</li><li>Медленный рост силы</li></ul>
+
+  # Новости.
+  - key: news_harbor_date
+    type: news
+    title: "\"Глубокая гавань\" выйдет через две недели - студия назвала дату"
+    author: galaga_pro
+    ago: 5h
+    views: 640
+    fields:
+      field_topic: Анонсы
+      field_tags: [релизы, детективы, Северный маяк, предзаказ]
+      field_game: deep_harbor
+      field_image: {file: images/news-harbor-date.webp}
+      field_body: |
+        <p>Студия "Северный маяк" объявила дату выхода детектива "Глубокая гавань". Игра выйдет на PC и PlayStation 5, предзаказ открыт.</p>
+        <p>Разработчики показали новый фрагмент: смотритель маяка находит пустую шлюпку и восстанавливает по звукам, что случилось с командой.</p>
+      field_source: {url: "https://example.com/deep-harbor", title: блог разработчиков}
+    comments:
+      - author: night_owl
+        body: Звуковые улики - звучит свежо. Жду.
+  - key: news_subway_preload
+    type: news
+    title: "\"Подземку 2049\" можно загрузить заранее"
+    author: retro_anna
+    ago: 9h
+    views: 380
+    fields:
+      field_topic: Анонсы
+      field_tags: [шутеры, предзаказ, релизы]
+      field_game: subway_2049
+      field_image: {file: images/news-subway-preload.webp}
+      field_body: |
+        <p>Предварительная загрузка шутера открылась на PC и Xbox Series. Игра займёт 48 ГБ, а на старте будет доступна русская озвучка.</p>
+  - key: news_handheld_update
+    type: news
+    title: Портативная консоль получила режим "картинка в картинке"
+    author: galaga_pro
+    ago: 1d
+    views: 910
+    fields:
+      field_topic: Железо
+      field_tags: [портативные консоли, обновления, железо]
+      field_image: {file: images/news-handheld-update.webp}
+      field_body: |
+        <p>Гайд или видео теперь можно держать в углу экрана прямо во время игры. Окно занимает четверть или две пятых экрана, звук берётся из игры.</p>
+      field_source: {url: "https://example.com/handheld-update", title: заметки к обновлению}
+  - key: news_courier_patch
+    type: news
+    title: "\"Неоновый курьер\" получил большой патч: новые заказы и район города"
+    author: galaga_pro
+    ago: 1d6h
+    views: 560
+    fields:
+      field_topic: Обновления
+      field_tags: [обновления, гонки]
+      field_game: neon_courier
+      field_image: {file: images/news-courier-patch.webp}
+      field_body: |
+        <p>Патч на 4 ГБ добавил портовый район, двадцать новых типов заказов и ночные гонки по крышам. Разработчики обещают, что это лишь первое из трёх больших обновлений.</p>
+      field_source: {url: "https://example.com/neon-courier-patch", title: список изменений}
+  - key: news_indie_fest
+    type: news
+    title: Инди-фестиваль объявил победителей
+    author: retro_anna
+    ago: 2d
+    views: 480
+    fields:
+      field_topic: Индустрия
+      field_tags: [фестивали, инди]
+      field_image: {file: images/news-indie-fest.webp}
+      field_body: |
+        <p>Главный приз фестиваля получила головоломка, сделанная двумя разработчиками за год по вечерам. Приз зрительских симпатий - у "Фермы на облаках".</p>
+  - key: news_sky_farm_demo
+    type: news
+    title: "У \"Фермы на облаках\" вышла бесплатная демоверсия"
+    author: mkim
+    ago: 3d
+    views: 720
+    fields:
+      field_topic: Анонсы
+      field_tags: [демоверсии, уютные игры, инди]
+      field_game: sky_farm
+      field_image: {file: images/news-sky-farm-demo.webp}
+      field_body: |
+        <p>В демоверсии доступен первый сезон: два острова, мельница и почтовые змеи. Сохранение перенесётся в полную версию.</p>
+    comments:
+      - author: joystick_dad
+        body: Дочь уже назвала всех кур. Видимо, покупаем.
+  - key: news_retro_mini
+    type: news
+    title: Мини-версия ретро-консоли выйдет с тридцатью встроенными играми
+    author: retro_anna
+    ago: 4d
+    views: 1340
+    fields:
+      field_topic: Железо
+      field_tags: [ретро, железо, ностальгия]
+      field_image: {file: images/news-retro-mini.webp}
+      field_body: |
+        <p>Уменьшенная копия приставки девяностых получит два проводных геймпада, вывод по HDMI и сохранение в любой момент. Список игр обещают раскрыть ближе к старту продаж.</p>
+    comments:
+      - author: galaga_pro
+        body: Лишь бы провода у геймпадов были длиннее, чем в прошлый раз.
+  - key: news_cup_final
+    type: news
+    title: Финал городского турнира по файтингам собрал три тысячи зрителей
+    author: speedrun_lena
+    ago: 5d
+    views: 450
+    fields:
+      field_topic: Киберспорт
+      field_tags: [киберспорт, файтинги]
+      field_image: {file: images/news-cup-final.webp}
+      field_body: |
+        <p>Турнир прошёл в выставочном зале и в прямом эфире. Победитель отыграл решающий матч с минусом в два раунда и забрал кубок в последней атаке.</p>
+  - key: news_harbor_office
+    type: news
+    title: Студия "Северный маяк" открыла второй офис
+    author: mkim
+    ago: 8d
+    views: 300
+    fields:
+      field_topic: Индустрия
+      field_tags: [Северный маяк, инди]
+      field_image: {file: images/news-harbor-office.webp}
+      field_body: |
+        <p>Авторы "Глубокой гавани" наняли двенадцать человек и начали работу над следующим проектом. Каким он будет, студия пока не говорит.</p>
+  - key: news_route_trailer
+    type: news
+    title: "\"Последний маршрут\" показал ночную трассу в новом трейлере"
+    author: galaga_pro
+    ago: 10d
+    views: 610
+    fields:
+      field_topic: Анонсы
+      field_tags: [гонки, трейлеры]
+      field_game: last_route
+      field_image: {file: images/news-route-trailer.webp}
+      field_body: |
+        <p>Трамвай на мокрых рельсах, такси без пассажиров и пустой проспект: студия "Ночной трамвай" показала первую трассу своей новой гонки.</p>
+
+  # Видео.
+  - key: video_ember_halls_first_hour
+    type: video
+    title: "Ember Halls: первый час без подсказок"
+    author: pixel_kid
+    ago: 3d
+    views: 2100
+    fields:
+      field_game: ember_halls
+      field_image: {file: images/video-ember-halls-first-hour.webp}
+      field_duration: "58:20"
+      field_body: |
+        <p>Играем с нуля на обычной сложности: первые побеги, первые благословения и первая встреча со Стражем лестниц.</p>
+      field_chapters: |
+        <ul><li>00:00 - очаг</li><li>06:40 - нижние залы</li><li>24:10 - первая смерть</li><li>41:30 - Страж</li></ul>
+  - key: video_wild_hand_cards
+    type: video
+    title: "Wild Hand: пять диких карт для первых забегов"
+    author: galaga_pro
+    ago: 7d
+    views: 1650
+    fields:
+      field_game: wild_hand
+      field_image: {file: images/video-wild-hand-cards.webp}
+      field_duration: "12:40"
+      field_body: |
+        <p>Какие дикие карты брать, когда ничего ещё не открыто, и как не потерять забег за третьим столом.</p>
+      field_chapters: |
+        <ul><li>00:00 - вступление</li><li>01:30 - множители</li><li>05:10 - экономика</li><li>09:20 - ошибки новичков</li></ul>
+    comments:
+      - author: mkim
+        body: Наконец-то прошёл второй стол. Спасибо!
+  - key: video_orbit_loop_start
+    type: video
+    title: "Orbit Loop без спойлеров: с чего начать"
+    author: night_owl
+    ago: 12d
+    views: 980
+    fields:
+      field_game: orbit_loop
+      field_image: {file: images/video-orbit-loop-start.webp}
+      field_duration: "9:15"
+      field_body: |
+        <p>Как управлять кораблём, зачем читать журнал и почему не стоит бояться умирать. Ни одного открытия не раскрываем.</p>
+  - key: video_harbor_gameplay
+    type: video
+    title: "\"Глубокая гавань\": двадцать минут игрового процесса"
+    author: retro_anna
+    ago: 1d
+    views: 1120
+    fields:
+      field_game: deep_harbor
+      field_image: {file: images/video-harbor-gameplay.webp}
+      field_duration: "20:04"
+      field_body: |
+        <p>Ночь на маяке от начала до конца: радиоэфир, пустая шлюпка и первая звуковая улика. Запись предоставлена студией.</p>
+
+  # Статьи.
+  - key: article_long_games
+    type: article
+    title: Почему игры стали такими длинными
+    author: sofa_critic
+    ago: 4d
+    views: 1870
+    fields:
+      field_image: {file: images/article-long-games.webp}
+      field_body: |
+        <p>Сто часов в ролевой игре когда-то были редкостью, теперь - норма. Разбираемся, откуда берутся длинные игры и почему всё больше игроков их не заканчивают.</p>
+        <p>Отчасти виновата цена: игре за полную стоимость нужно выглядеть "большой". Отчасти - открытые миры, которые проще наполнить заданиями, чем историей. А короткие игры вроде The Silent Mariner или Summit Line тем временем доказывают, что десяти часов достаточно, чтобы запомниться навсегда.</p>
+    comments:
+      - author: mkim
+        body: Хочу игры на выходные, а не на год.
+      - author: quest_master
+        body: А я люблю жить в игре месяцами. Пусть будут разные.
+  - key: article_metroidvania
+    type: article
+    title: "Метроидвания: как одна карта стала жанром"
+    author: retro_anna
+    ago: 16d
+    views: 1260
+    fields:
+      field_image: {file: images/article-metroidvania.webp}
+      field_body: |
+        <p>Star Vault вышла в 1994 году и задала правила, по которым до сих пор делают игры: большая связанная карта, закрытые двери, способность, которая открывает путь назад. Lantern Deep и Shifting Keep - её прямые наследники.</p>
+        <p>В этой статье - как устроена хорошая карта, почему возвращение в старые места не скучно и зачем жанру ощущение "я здесь уже был, но теперь могу больше".</p>
+  - key: article_cozy
+    type: article
+    title: Почему мы любим игры про фермы
+    author: joystick_dad
+    ago: 22d
+    views: 840
+    fields:
+      field_image: {file: images/article-cozy.webp}
+      field_body: |
+        <p>В уютных играх ничего не горит: урожай подождёт, соседи не обидятся, а единственная угроза - ворона на грядке. Мы спросили читателей, почему они возвращаются в Willow Acres годами, и собрали самые честные ответы.</p>
+    comments:
+      - author: pixel_kid
+        body: Потому что там всё получается. В отличие от жизни.
+  - key: article_save_systems
+    type: article
+    title: "Сохраняться или нет: короткая история сохранений"
+    author: quest_master
+    ago: 30d
+    views: 690
+    fields:
+      field_image: {file: images/article-save-systems.webp}
+      field_body: |
+        <p>Пароли из букв и цифр, батарейка в картридже, точки сохранения и автосохранение каждые пять минут - способ сохранять прогресс всегда менял то, как мы играем. Вспоминаем, как это было.</p>
+
+  # Блоги игроков.
+  - key: blog_summit_line_feathers
+    type: blog
+    title: Как я собрала все перья в Summit Line и не сошла с ума
+    author: speedrun_lena
+    ago: 1d3h
+    views: 640
+    fields:
+      field_image: {file: images/blog-summit-line-feathers.webp}
+      field_game: summit_line
+      field_tags: [гайды, рогалики]
+      field_body: |
+        <p>Сто пятьдесят перьев, три недели вечеров и одна сломанная кнопка прыжка. Делюсь тем, что помогло дойти до конца.</p>
+        <h2>Не гонитесь за всеми сразу</h2>
+        <p>Первое прохождение - просто сюжет. Перья запоминаются сами: "а вон то висело над шипами". Второй заход идёт уже по памяти.</p>
+        <h2>Учите рывок вниз</h2>
+        <p>Половина сложных перьев берётся рывком по диагонали вниз с прыжком в конце. Потренируйтесь на пустом экране - дальше пойдёт легче.</p>
+    comments:
+      - author: pixel_kid
+        body: Восьмая глава - это не перья, это проверка на прочность.
+        replies:
+          - author: speedrun_lena
+            body: Она и есть. Но после неё всё остальное кажется прогулкой.
+  - key: blog_retro_weekend
+    type: blog
+    title: "Ретро-выходные с сыном: что зашло, а что нет"
+    author: joystick_dad
+    ago: 2d5h
+    views: 410
+    fields:
+      field_image: {file: images/blog-retro-weekend.webp}
+      field_game: clockwork_crown
+      field_tags: [ретро, ностальгия, кооператив]
+      field_body: |
+        <p>Решил показать сыну игры моего детства. Он вырос на открытых мирах, так что ждал скепсиса - и получил его, но не везде.</p>
+        <p>Clockwork Crown неожиданно зашёл: бои прямо на карте мира и путешествия во времени его зацепили. А вот платформеры с тремя жизнями и без сохранений вызвали искреннее возмущение.</p>
+    comments:
+      - author: retro_anna
+        body: Три жизни и без сохранений - это и есть настоящий хоррор.
+  - key: blog_wild_hand_deck
+    type: blog
+    title: "Wild Hand: моя самая безумная колода"
+    author: mkim
+    ago: 3d8h
+    views: 780
+    fields:
+      field_image: {file: images/blog-wild-hand-deck.webp}
+      field_game: wild_hand
+      field_tags: [рогалики, гайды]
+      field_body: |
+        <p>Восьмой раунд, на руке - пара шестёрок, а счёт уходит за миллиард. Рассказываю, как собиралась эта колода и почему её больше не повторить.</p>
+        <p>Главное - не жадничать в магазине: две правильные дикие карты лучше пяти случайных.</p>
+    comments:
+      - author: galaga_pro
+        body: Миллиард на паре шестёрок - скрин или не было!
+        replies:
+          - author: mkim
+            body: Скрин в профиле. Сам до сих пор не верю.
+  - key: blog_orbit_loop_tears
+    type: blog
+    title: Orbit Loop заставил меня плакать над космическим кораблём
+    author: night_owl
+    ago: 5d
+    views: 520
+    fields:
+      field_image: {file: images/blog-orbit-loop-tears.webp}
+      field_game: orbit_loop
+      field_tags: [инди]
+      field_body: |
+        <p>Без спойлеров: эта игра о любопытстве и о том, что делать, когда время на исходе. Последние полчаса я провёл, не дыша.</p>
+        <p>Если вы ещё не играли - не читайте ничего, просто начните. Если играли - вы понимаете, о чём я.</p>
+  - key: blog_coop_willow_acres
+    type: blog
+    title: Ферма на четверых - сто дней кооператива в Willow Acres
+    author: quest_master
+    ago: 8d
+    views: 360
+    fields:
+      field_image: {file: images/blog-coop-willow-acres.webp}
+      field_game: willow_acres
+      field_tags: [кооператив, уютные игры]
+      field_body: |
+        <p>Четыре человека, одна ферма и бесконечные споры о том, где ставить курятник. Рассказываю, как мы распределили роли и что из этого вышло.</p>
+        <p>Главный вывод: назначьте одного ответственного за сундуки. Иначе весенние семена окажутся в сундуке с рыбой.</p>
+    comments:
+      - author: sofa_critic
+        body: Сундук с рыбой и семенами - классика любого кооператива.
+  - key: blog_ember_halls_builds
+    type: blog
+    title: Пять сборок для Ember Halls, которые работают всегда
+    author: galaga_pro
+    ago: 12d
+    views: 900
+    fields:
+      field_image: {file: images/blog-ember-halls-builds.webp}
+      field_game: ember_halls
+      field_tags: [гайды, рогалики]
+      field_body: |
+        <p>Не лучшие сборки, а надёжные: те, с которыми я прохожу забег почти всегда, даже с неудачными благословениями.</p>
+        <ul><li>Копьё и дух грозы - молнии по всей арене</li><li>Щит и дух прилива - отбрасывание в стены</li><li>Лук и дух луны - критические выстрелы</li><li>Кулаки и дух дуба - защита и скорость</li><li>Меч и дух войны - урон по площади</li></ul>
+
+  # Страница.
+  - key: about
+    type: page
+    title: О проекте
+    fields:
+      field_body: |
+        <p>Это демо-сайт движка Kosatka: игровой портал с новостями, обзорами, видео и страницами игр, форумом и опросами. Всё здесь - обычные материалы, их можно править и удалять в админке.</p>
+        <p>Игры, студии, новости и все люди здесь выдуманы для демо, картинки нарисованы для него.</p>
+
+views:
+  - name: home
+    label: Главная
+    display_type: block
+    style: list
+    pager: true
+    page_size: 12
+    fields:
+      - {storage: field_image, image_style: game_card, link_to: content}
+      - {builtin: content_type}
+      - {storage: field_verdict}
+      - {builtin: title, link_to: content}
+      - {builtin: created_at, date_format: medium}
+      - {storage: field_body, trim_length: 200}
+      - {builtin: comment_count, show_label: true}
+    filters:
+      - {builtin: status, operator: eq, value: "1"}
+      - {builtin: promote, operator: eq, value: "1"}
+      - {builtin: on_moderation, operator: eq, value: "0"}
+    sorts:
+      - {builtin: sticky, direction: desc}
+      - {builtin: created_at, direction: desc}
+  - name: reviews
+    label: Обзоры
+    display_type: page
+    path: reviews
+    style: grid
+    grid_columns: 3
+    pager: true
+    page_size: 12
+    fields:
+      - {storage: field_image, image_style: game_card, link_to: content}
+      - {storage: field_verdict}
+      - {builtin: title, link_to: content}
+      - {storage: field_platforms, tag_format: plain}
+      - {builtin: comment_count, show_label: true}
+    filters:
+      - {builtin: content_type, operator: in, value: review}
+      - {builtin: status, operator: eq, value: "1"}
+      - {storage: field_platforms, operator: eq, exposed: platform, exposed_label: Платформа}
+      - {storage: field_verdict, operator: in, exposed: verdict, exposed_label: Вердикт}
+    sorts:
+      - {builtin: created_at, direction: desc}
+  - name: news
+    label: Новости
+    display_type: page
+    path: news
+    style: list
+    pager: true
+    page_size: 15
+    fields:
+      - {storage: field_image, image_style: game_card, link_to: content}
+      - {storage: field_topic, tag_format: badges}
+      - {builtin: title, link_to: content}
+      - {builtin: created_at, date_format: medium}
+      - {storage: field_body, trim_length: 160}
+    filters:
+      - {builtin: content_type, operator: in, value: news}
+      - {builtin: status, operator: eq, value: "1"}
+      - {storage: field_topic, operator: eq, exposed: topic, exposed_label: Тема}
+    sorts:
+      - {builtin: created_at, direction: desc}
+  - name: videos
+    label: Видео
+    display_type: page
+    path: video
+    style: grid
+    grid_columns: 3
+    pager: true
+    page_size: 12
+    fields:
+      - {storage: field_image, image_style: game_card, link_to: content}
+      - {builtin: title, link_to: content}
+      - {storage: field_duration}
+      - {builtin: view_count, show_label: true}
+    filters:
+      - {builtin: content_type, operator: in, value: video}
+      - {builtin: status, operator: eq, value: "1"}
+    sorts:
+      - {builtin: created_at, direction: desc}
+  - name: articles
+    label: Статьи
+    display_type: page
+    path: articles
+    style: list
+    pager: true
+    page_size: 12
+    fields:
+      - {storage: field_image, image_style: game_card, link_to: content}
+      - {builtin: title, link_to: content}
+      - {builtin: author}
+      - {builtin: created_at, date_format: medium}
+      - {storage: field_body, trim_length: 200}
+    filters:
+      - {builtin: content_type, operator: in, value: article}
+      - {builtin: status, operator: eq, value: "1"}
+    sorts:
+      - {builtin: created_at, direction: desc}
+  - name: games
+    label: Игры
+    display_type: page
+    path: games
+    style: grid
+    grid_columns: 4
+    pager: true
+    page_size: 24
+    fields:
+      - {storage: field_cover, image_style: game_cover, link_to: content}
+      - {builtin: title, link_to: content}
+      - {builtin: ratings.rating, params: {look: full}}
+      - {storage: field_release, date_format: medium}
+      - {storage: field_genres, tag_format: plain}
+    filters:
+      - {builtin: content_type, operator: in, value: game}
+      - {builtin: status, operator: eq, value: "1"}
+      - {storage: field_platforms, operator: eq, exposed: platform, exposed_label: Платформа}
+      - {storage: field_genres, operator: eq, exposed: genre, exposed_label: Жанр}
+    sorts:
+      - {builtin: ratings.weighted, direction: desc, params: {min_votes: "3"}, exposed: rating, exposed_label: По рейтингу}
+      - {storage: field_release, direction: desc, exposed: new, exposed_label: Сначала новые}
+      - {builtin: title, direction: asc, exposed: title, exposed_label: По названию}
+      - {builtin: title, direction: asc}
+  - name: releases
+    label: Календарь релизов
+    display_type: page
+    path: releases
+    style: list
+    pager: true
+    page_size: 30
+    group_by: field_release
+    group_date_format: month
+    fields:
+      - {storage: field_cover, image_style: game_cover, link_to: content}
+      - {builtin: title, link_to: content}
+      - {storage: field_release, date_format: medium}
+      - {storage: field_platforms, tag_format: plain}
+    filters:
+      - {builtin: content_type, operator: in, value: game}
+      - {builtin: status, operator: eq, value: "1"}
+      - {storage: field_release, operator: not_ended}
+    sorts:
+      - {storage: field_release, direction: asc}
+  - name: game_materials
+    label: Материалы об игре
+    display_type: attachment
+    attach_types: [game]
+    attach_title: Материалы об игре
+    style: list
+    page_size: 20
+    fields:
+      - {builtin: content_type}
+      - {builtin: title, link_to: content}
+      - {builtin: created_at, date_format: medium}
+    filters:
+      - {storage: field_game, operator: related_to_current, contextual: true}
+      - {builtin: status, operator: eq, value: "1"}
+    sorts:
+      - {builtin: created_at, direction: desc}
+  - name: popular
+    label: Популярное
+    display_type: block
+    style: list
+    page_size: 5
+    fields:
+      - {builtin: title, link_to: content}
+      - {builtin: view_count, show_label: true}
+    filters:
+      - {builtin: content_type, operator: in, value: "review,news,video,article"}
+      - {builtin: status, operator: eq, value: "1"}
+    sorts:
+      - {builtin: views, direction: desc}
+  - name: blogs
+    label: Блоги
+    display_type: page
+    path: blogs
+    style: list
+    pager: true
+    page_size: 12
+    header: "<p>Пишут игроки: впечатления, истории, гайды. Завести свой блог может любой зарегистрированный - кнопка \"Создать материал\" в меню пользователя.</p>"
+    fields:
+      - {storage: field_image, image_style: game_card, link_to: content}
+      - {builtin: title, link_to: content}
+      - {builtin: author, link_to: author}
+      - {builtin: created_at, date_format: medium}
+      - {storage: field_body, trim_length: 180}
+      - {storage: field_tags, tag_format: plain}
+      - {builtin: comment_count, show_label: true}
+    filters:
+      - {builtin: content_type, operator: in, value: blog}
+      - {builtin: status, operator: eq, value: "1"}
+    sorts:
+      - {builtin: created_at, direction: desc}
+  - name: user_blog
+    label: Блог
+    display_type: user_tab
+    tab_path: blog
+    style: list
+    pager: true
+    page_size: 10
+    fields:
+      - {storage: field_image, image_style: game_card, link_to: content}
+      - {builtin: title, link_to: content}
+      - {builtin: created_at, date_format: medium}
+      - {storage: field_body, trim_length: 180}
+    filters:
+      - {builtin: content_type, operator: in, value: blog}
+      - {builtin: status, operator: eq, value: "1"}
+      - {builtin: created_by, operator: eq, contextual: true}
+    sorts:
+      - {builtin: created_at, direction: desc}
+  - name: blogs_latest
+    label: Блоги игроков
+    display_type: block
+    style: list
+    page_size: 4
+    fields:
+      - {builtin: title, link_to: content}
+      - {builtin: author}
+    filters:
+      - {builtin: content_type, operator: in, value: blog}
+      - {builtin: status, operator: eq, value: "1"}
+    sorts:
+      - {builtin: created_at, direction: desc}
+  - name: top_games
+    label: Лучшие игры
+    display_type: block
+    style: list
+    page_size: 5
+    fields:
+      - {builtin: title, link_to: content}
+      - {builtin: ratings.rating, params: {look: average}}
+    filters:
+      - {builtin: content_type, operator: in, value: game}
+      - {builtin: status, operator: eq, value: "1"}
+    sorts:
+      - {builtin: ratings.weighted, direction: desc, params: {min_votes: "3"}}
+  - name: upcoming
+    label: Скоро выйдут
+    display_type: block
+    style: list
+    page_size: 5
+    fields:
+      - {builtin: title, link_to: content}
+      - {storage: field_release, date_format: medium}
+    filters:
+      - {builtin: content_type, operator: in, value: game}
+      - {builtin: status, operator: eq, value: "1"}
+      - {storage: field_release, operator: not_ended}
+    sorts:
+      - {storage: field_release, direction: asc}
+
+blocks:
+  - {region: sidebar, view: popular, title: Популярное, show_title: true}
+  - {region: sidebar, view: upcoming, title: Скоро выйдут, show_title: true}
+  - {region: sidebar, plugin: last_comments, title: Обсуждают}
+  - {region: sidebar, plugin: tag_cloud, vocabulary: genres, title: Жанры, show_title: true, config: {count: "12"}}
+  - {region: sidebar, view: blogs_latest, title: Блоги игроков, show_title: true, visibility: homepage}
+  - {region: sidebar, view: top_games, title: Лучшие игры, show_title: true, types: [game]}
+  - {region: sidebar, plugin: tag_cloud, vocabulary: tags, title: Теги, show_title: true, types: [news, blog], config: {count: "20"}}
+
+menus:
+  - name: main
+    links:
+      - {title: Новости, view: news}
+      - {title: Обзоры, view: reviews}
+      - {title: Видео, view: videos}
+      - {title: Статьи, view: articles}
+      - {title: Блоги, view: blogs}
+      - {title: Игры, view: games}
+      - {title: Релизы, view: releases}
+  - name: footer
+    label: Подвал
+    region: footer
+    links:
+      - {title: О проекте, node: about}
+
+# Права ролей сверх стартовых: пользователи ведут блоги.
+permissions:
+  user: [create blog content, edit own blog content, use_text_format_basic_html]
+
+# Демо-содержимое модулей - в формате их demo/<язык>.json. Модули ставятся
+# вместе с набором (app install без -modules); сайт, собранный без модуля
+# форума (модуль из своего репозитория), ставится без его части.
+modules:
+  forum:
+    vocabulary: Форум
+    menu: Форум
+    categories:
+      - name: Игры
+        description: Всё об играх, во что вы играете.
+        sections:
+          - {name: Обсуждение игр, description: "Впечатления, споры и рекомендации."}
+          - {name: Помогите пройти, description: "Застряли - спросите, здесь подскажут без лишних спойлеров."}
+      - name: Железо
+        description: ПК, консоли, геймпады и всё, на чём играют.
+        sections:
+          - {name: ПК и консоли, description: "Сборки, апгрейды, выбор консоли."}
+      - name: Флудилка
+        description: Разговоры не об играх. Ну, почти.
+        sections:
+          - {name: Свободная тема, description: "Кино, книги, жизнь."}
+    topics:
+      - section: Обсуждение игр
+        title: Правила форума
+        author: galaga_pro
+        sticky: true
+        views: 1200
+        body: "<p>Спойлеры прячем под предупреждение, к собеседникам относимся по-человечески. Вопрос о прохождении - в \"Помогите пройти\".</p>"
+        replies: []
+      - section: Помогите пройти
+        title: "Orbit Loop: не могу попасть внутрь кометы"
+        author: joystick_dad
+        views: 340
+        body: "<p>Подлетаю, облетаю вокруг, а входа не вижу. Только намекните, без ответа!</p>"
+        replies:
+          - author: night_owl
+            body: "Намёк: обратите внимание, когда именно вы туда прилетаете."
+            replies:
+              - author: joystick_dad
+                body: Получилось! Спасибо, что не раскрыли.
+      - section: Обсуждение игр
+        title: Лучший рогалик для новичка?
+        author: mkim
+        views: 520
+        body: "<p>Хочу попробовать жанр, но боюсь, что брошу через час. С чего начать?</p>"
+        replies:
+          - author: retro_anna
+            body: Ember Halls - смерть там двигает сюжет, бросить сложно.
+          - author: galaga_pro
+            body: Wild Hand, если любите карты. Card Tower, если любите думать.
+            replies:
+              - author: mkim
+                body: Взял Wild Hand. Кажется, это была ошибка - уже три ночи не сплю.
+      - section: ПК и консоли
+        title: Портативная консоль или ноутбук для поездок?
+        author: speedrun_lena
+        views: 410
+        body: "<p>Часто езжу в поездах. Что удобнее для игр в дороге?</p>"
+        replies:
+          - author: pixel_kid
+            body: Портативка. Ноутбук на коленях в купе - так себе удовольствие.
+          - author: quest_master
+            body: Зависит от игр. Стратегии на портативке - боль.
+      - section: Свободная тема
+        title: Какие саундтреки слушаете вне игр?
+        author: sofa_critic
+        views: 260
+        body: "<p>У меня в плеере половина - музыка из игр. Делитесь своими.</p>"
+        replies:
+          - author: speedrun_lena
+            body: Summit Line. Под неё отлично работается.
+          - author: night_owl
+            body: Orbit Loop, но только когда грустно.
+  polls:
+    title: Во что вы играете на этих выходных?
+    description: "<p>Новинка, старая любовь или перерыв от игр - рассказывайте.</p>"
+    options:
+      - Во что-то новое
+      - В старую любимую игру
+      - Всё ещё в Wild Hand
+      - Отдыхаю от игр
+    votes: {pixel_kid: 2, retro_anna: 1, galaga_pro: 2, sofa_critic: 0, night_owl: 1, mkim: 2, speedrun_lena: 0, quest_master: 1, joystick_dad: 3}
+    comments:
+      - author: joystick_dad
+        body: Отдыхаю - значит, смотрю, как играют дети.
+    menu: Опрос
+    block: Опрос недели
+  galleries:
+    node: review_orbit_loop
+    title: Солнечная система в кадре
+    description: Кадры из нашего прохождения - без спойлеров.
+    pictures:
+      - {title: Костёр у посадки, file: images/gallery-campfire.webp}
+      - {title: Обсерватория, file: images/gallery-observatory.webp}
+      - {title: Треснувшая планета, file: images/gallery-planet.webp}
+      - {title: Штормовой океан, file: images/gallery-ocean.webp}
+      - {title: Блуждающая луна, file: images/gallery-moon.webp}
+      - {title: Корабль на взлёте, file: images/gallery-launch.webp}
+  ratings:
+    types: [game]
+    votes:
+      - {node: ember_halls, scores: {pixel_kid: 5, retro_anna: 5, galaga_pro: 5, sofa_critic: 4, night_owl: 5, mkim: 4, speedrun_lena: 5}}
+      - {node: wild_hand, scores: {pixel_kid: 5, galaga_pro: 5, sofa_critic: 5, mkim: 5, quest_master: 4, joystick_dad: 4}}
+      - {node: lantern_deep, scores: {retro_anna: 5, galaga_pro: 4, night_owl: 5, speedrun_lena: 5, pixel_kid: 4}}
+      - {node: willow_acres, scores: {mkim: 5, joystick_dad: 5, quest_master: 4, sofa_critic: 4}}
+      - {node: clockwork_crown, scores: {retro_anna: 5, joystick_dad: 5, quest_master: 5}}
+      - {node: star_vault, scores: {retro_anna: 5, galaga_pro: 4}}
+      - {node: summit_line, scores: {speedrun_lena: 5, pixel_kid: 5, night_owl: 4, mkim: 4}}
+      - {node: rain_precinct, scores: {quest_master: 5, sofa_critic: 4, night_owl: 4}}
+      - {node: orbit_loop, scores: {night_owl: 5, retro_anna: 5, joystick_dad: 4, sofa_critic: 5}}
+      - {node: card_tower, scores: {galaga_pro: 5, mkim: 4, quest_master: 4}}
+      - {node: silent_mariner, scores: {night_owl: 5, sofa_critic: 4, retro_anna: 4}}
+      - {node: gates_of_arlen, scores: {quest_master: 5, sofa_critic: 5, joystick_dad: 4, mkim: 5, galaga_pro: 4}}
+      - {node: ashen_throne, scores: {galaga_pro: 5, pixel_kid: 4, night_owl: 4, speedrun_lena: 3}}
+      - {node: shifting_keep, scores: {pixel_kid: 4, speedrun_lena: 4, galaga_pro: 3}}
+      - {node: neon_courier, scores: {sofa_critic: 2, joystick_dad: 3, night_owl: 2}}
+  forms:
+    title: Предложить новость
+    description: Знаете то, чего не знаем мы? Расскажите - проверим и напишем.
+    confirmation: Спасибо! Редакция прочитает и ответит на почту.
+    submit: Отправить
+    elements:
+      - {name: name, type: text, label: Имя, required: true}
+      - {name: email, type: email, label: E-mail, required: true}
+      - {name: topic, type: select, label: Тема, required: true, options: [Анонс, Железо, Киберспорт, Другое]}
+      - {name: link, type: text, label: Ссылка на источник}
+      - {name: message, type: textarea, label: Что случилось, required: true}
+    submissions:
+      - author: pixel_kid
+        values: {name: Пиксель, email: pixel_kid@example.com, topic: Анонс, link: "https://example.com/rumor", message: "Говорят, у \"Глубокой гавани\" будет режим для двоих."}
+      - author: speedrun_lena
+        values: {name: Лена, email: speedrun_lena@example.com, topic: Киберспорт, message: "В субботу забег по Summit Line на время, приходите смотреть."}
+    menu: Предложить новость

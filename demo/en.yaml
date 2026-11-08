@@ -1,0 +1,1438 @@
+# A game portal: news, reviews, videos and game pages, a release
+# calendar. Everything is made up for the demo - the games, the studios,
+# the news and the people; the pictures are the theme's own (demo/images).
+
+site:
+  slogan: News, reviews and videos about games
+  front_page_view: home
+  # The modules' links (forum, poll, quotes, form) go in these menus.
+  main_menu: main
+  footer_menu: footer
+
+users:
+  - pixel_kid
+  - retro_anna
+  - galaga_pro
+  - sofa_critic
+  - night_owl
+  - mkim
+  - speedrun_lena
+  - quest_master
+  - joystick_dad
+
+image_styles:
+  - name: game_cover
+    label: Game cover
+    width: 600
+    height: 800
+    mode: fill
+    anchor: focal
+    hidpi: true
+  - name: game_card
+    label: Card
+    width: 720
+    height: 405
+    mode: fill
+    anchor: focal
+    hidpi: true
+
+vocabularies:
+  - name: platforms
+    label: Platforms
+    path: platforms
+    terms:
+      - PC
+      - PlayStation 5
+      - PlayStation 4
+      - Xbox Series
+      - Xbox One
+      - Nintendo Switch
+      - name: Retro
+        description: Consoles and computers of years past.
+  - name: genres
+    label: Genres
+    path: genres
+    terms: [RPG, Action, Roguelike, Platformer, Strategy, Simulation, Adventure, Puzzle, Horror, Shooter, Racing]
+  - name: topics
+    label: News topics
+    path: topics
+    terms: [Industry, Hardware, Announcements, Updates, Esports]
+  - name: tags
+    label: Tags
+    path: tags
+    terms: [releases, detective, indie, North Lighthouse, pre-orders, shooters, handhelds, updates, festivals, demos, cozy games, retro, hardware, esports, fighting games, racing, trailers, roguelikes, guides, nostalgia, co-op]
+
+field_storages:
+  - name: field_cover
+    type: image
+  - name: field_platforms
+    type: taxonomy
+    vocabulary: platforms
+    multiple: true
+  - name: field_genres
+    type: taxonomy
+    vocabulary: genres
+    multiple: true
+  - name: field_topic
+    type: taxonomy
+    vocabulary: topics
+  - name: field_release
+    type: date
+  - name: field_developer
+    type: text
+  - name: field_publisher
+    type: text
+  - name: field_requirements
+    type: text
+  - name: field_game
+    type: reference
+    target: [game]
+  - name: field_verdict
+    type: list
+    options:
+      - {value: masterpiece, label: "★ Masterpiece"}
+      - {value: great, label: "✓ Great"}
+      - {value: fine, label: "≈ Fine"}
+      - {value: miss, label: "✕ Miss"}
+  - name: field_pros
+    type: text
+  - name: field_cons
+    type: text
+  - name: field_source
+    type: link
+  - name: field_duration
+    type: text
+  - name: field_chapters
+    type: text
+  - name: field_tags
+    type: taxonomy
+    vocabulary: tags
+    multiple: true
+
+content_types:
+  - name: game
+    label: Game
+    description: "A game's page: its cover, platforms, genres, release date and everything written about it."
+    path: games
+    comments: closed
+    fields:
+      - {storage: field_cover, label: Cover, show_on_detail: true, detail_image_style: game_cover, list_image_style: game_cover, sort_order: 0, display_order: 0}
+      - {storage: field_release, label: Release date, show_on_detail: true, show_label: true, date_format: medium, sort_order: 10, display_order: 10}
+      - {storage: field_platforms, label: Platforms, widget: checkboxes, show_on_detail: true, show_label: true, sort_order: 20, display_order: 20}
+      - {storage: field_genres, label: Genres, widget: checkboxes, show_on_detail: true, show_label: true, sort_order: 30, display_order: 30}
+      - {storage: field_developer, label: Developer, show_on_detail: true, show_label: true, sort_order: 40, display_order: 40}
+      - {storage: field_publisher, label: Publisher, show_on_detail: true, show_label: true, sort_order: 50, display_order: 50}
+      - {storage: field_body, label: About the game, widget: textarea, text_formats: [basic_html, plain_text], show_on_detail: true, renders_in_body: true, sort_order: 60, display_order: 60}
+      - {storage: field_requirements, label: System requirements (PC), widget: textarea, text_formats: [basic_html, plain_text], show_on_detail: true, show_label: true, sort_order: 70, display_order: 70}
+  - name: review
+    label: Review
+    description: "A game's review with a verdict, its pros and cons."
+    path: reviews
+    comments: open
+    show_submitted: true
+    show_view_count: true
+    promote: true
+    revisions: true
+    fields:
+      - {storage: field_game, label: Game, widget: autocomplete, required: true, show_on_detail: true, show_label: true, sort_order: 0, display_order: 0}
+      - {storage: field_verdict, label: Verdict, widget: select, required: true, show_on_detail: true, show_label: true, sort_order: 10, display_order: 5}
+      - {storage: field_platforms, label: Platforms, widget: checkboxes, show_on_detail: true, sort_order: 20, display_order: 6}
+      - {storage: field_image, label: Picture, show_on_detail: true, detail_image_style: article_wide, list_image_style: game_card, sort_order: 30, display_order: 1}
+      - {storage: field_body, label: Text, widget: textarea, text_formats: [basic_html, plain_text], show_on_detail: true, renders_in_body: true, sort_order: 40, display_order: 10}
+      - {storage: field_pros, label: Liked, widget: textarea, text_formats: [basic_html, plain_text], show_on_detail: true, show_label: true, sort_order: 50, display_order: 20}
+      - {storage: field_cons, label: Didn't like, widget: textarea, text_formats: [basic_html, plain_text], show_on_detail: true, show_label: true, sort_order: 60, display_order: 30}
+  - name: news
+    label: News
+    description: "A short news item with its source."
+    path: news
+    comments: open
+    show_submitted: true
+    promote: true
+    fields:
+      - {storage: field_topic, label: Topic, widget: select, show_on_detail: true, sort_order: 0, display_order: 0}
+      - {storage: field_game, label: Game, widget: autocomplete, show_on_detail: true, show_label: true, sort_order: 10, display_order: 30}
+      - {storage: field_image, label: Picture, show_on_detail: true, detail_image_style: article_wide, list_image_style: game_card, sort_order: 20, display_order: 1}
+      - {storage: field_body, label: Text, widget: textarea, text_formats: [basic_html, plain_text], show_on_detail: true, renders_in_body: true, sort_order: 30, display_order: 10}
+      - {storage: field_source, label: Source, show_on_detail: true, show_label: true, sort_order: 40, display_order: 20}
+      - {storage: field_tags, label: Tags, widget: autocomplete, show_on_detail: true, show_label: true, sort_order: 50, display_order: 25}
+  - name: video
+    label: Video
+    description: "A video: playthroughs, breakdowns, ten-minute reviews."
+    path: video
+    comments: open
+    show_submitted: true
+    show_view_count: true
+    promote: true
+    fields:
+      - {storage: field_game, label: Game, widget: autocomplete, show_on_detail: true, show_label: true, sort_order: 0, display_order: 30}
+      - {storage: field_image, label: Cover, show_on_detail: true, detail_image_style: article_wide, list_image_style: game_card, sort_order: 10, display_order: 0}
+      - {storage: field_duration, label: Length, show_on_detail: true, show_label: true, sort_order: 20, display_order: 5}
+      - {storage: field_body, label: Description, widget: textarea, text_formats: [basic_html, plain_text], show_on_detail: true, renders_in_body: true, sort_order: 30, display_order: 10}
+      - {storage: field_chapters, label: Chapters, widget: textarea, text_formats: [basic_html, plain_text], show_on_detail: true, show_label: true, sort_order: 40, display_order: 20}
+  - name: blog
+    label: Blog post
+    description: "A player's blog post: impressions, stories, guides. Written by registered users."
+    path: blogs
+    comments: open
+    show_submitted: true
+    show_view_count: true
+    fields:
+      - {storage: field_image, label: Picture, show_on_detail: true, detail_image_style: article_wide, list_image_style: game_card, sort_order: 0, display_order: 0}
+      - {storage: field_body, label: Text, widget: textarea, text_formats: [basic_html, plain_text], show_on_detail: true, renders_in_body: true, sort_order: 10, display_order: 10}
+      - {storage: field_game, label: Game, widget: autocomplete, show_on_detail: true, show_label: true, sort_order: 20, display_order: 20}
+      - {storage: field_tags, label: Tags, widget: autocomplete, show_on_detail: true, show_label: true, sort_order: 30, display_order: 30}
+
+nodes:
+  # The games - all made up.
+  - key: ember_halls
+    type: game
+    title: Ember Halls
+    ago: 400d
+    views: 5400
+    fields:
+      field_cover: {file: images/game-ember-halls.webp}
+      field_release: 2020-09-17
+      field_platforms: [PC, Nintendo Switch, PlayStation 5, PlayStation 4, Xbox Series, Xbox One]
+      field_genres: [Roguelike, Action]
+      field_developer: Kiln Games
+      field_publisher: Kiln Games
+      field_body: |
+        <p>The heir of a burnt-out kingdom tries again and again to climb out of its burning halls. Every attempt is a new route through four floors of fire, blessings from the old spirits of the hearth and talks with the household, who remember every one of your deaths.</p>
+      field_requirements: |
+        <ul><li>System: 64-bit</li><li>Processor: dual core, 2.4 GHz</li><li>Memory: 4 GB</li><li>Graphics: 1 GB of video memory, DirectX 10</li><li>Storage: 15 GB</li></ul>
+  - key: wild_hand
+    type: game
+    title: Wild Hand
+    ago: 300d
+    views: 6100
+    fields:
+      field_cover: {file: images/game-wild-hand.webp}
+      field_release: 2024-02-20
+      field_platforms: [PC, Nintendo Switch, PlayStation 5, PlayStation 4, Xbox Series, Xbox One]
+      field_genres: [Roguelike, Strategy]
+      field_developer: Lone Ante
+      field_publisher: Paper Crane
+      field_body: |
+        <p>Poker where you may cheat - and should. Build hands, buy wild cards that change the rules, and survive every round before the deck turns into a scoring machine.</p>
+      field_requirements: |
+        <ul><li>Processor: any dual core</li><li>Memory: 1 GB</li><li>Graphics: OpenGL 2.1</li><li>Storage: 150 MB</li></ul>
+  - key: lantern_deep
+    type: game
+    title: Lantern Deep
+    ago: 500d
+    views: 4200
+    fields:
+      field_cover: {file: images/game-lantern-deep.webp}
+      field_release: 2017-02-24
+      field_platforms: [PC, Nintendo Switch, PlayStation 4, Xbox One]
+      field_genres: [Platformer, Action]
+      field_developer: Moss & Mortar
+      field_publisher: Moss & Mortar
+      field_body: |
+        <p>A small lantern-bearer descends into a buried kingdom of moss and crystal. A huge interconnected map, demanding fights and a world that tells its story without words.</p>
+  - key: willow_acres
+    type: game
+    title: Willow Acres
+    ago: 520d
+    views: 3900
+    fields:
+      field_cover: {file: images/game-willow-acres.webp}
+      field_release: 2016-02-26
+      field_platforms: [PC, Nintendo Switch, PlayStation 4, Xbox One]
+      field_genres: [Simulation]
+      field_developer: Barnlight Games
+      field_publisher: Barnlight Games
+      field_body: |
+        <p>An aunt's farm overgrown with weeds, a little town with its own people and a mine under the hill. Plant, fish, make friends - at your own pace.</p>
+  - key: clockwork_crown
+    type: game
+    title: Clockwork Crown
+    ago: 600d
+    views: 2100
+    fields:
+      field_cover: {file: images/game-clockwork-crown.webp}
+      field_release: 1995-03-11
+      field_platforms: [Retro]
+      field_genres: [RPG]
+      field_developer: Quill Soft
+      field_publisher: Quill Soft
+      field_body: |
+        <p>A classic role-playing game of the nineties about time travel, from the stone age to the end of the world. Battles on the world map itself and more than a dozen endings.</p>
+  - key: star_vault
+    type: game
+    title: Star Vault
+    ago: 610d
+    views: 1750
+    fields:
+      field_cover: {file: images/game-star-vault.webp}
+      field_release: 1994-03-19
+      field_platforms: [Retro]
+      field_genres: [Platformer, Action]
+      field_developer: Orbit Works
+      field_publisher: Orbit Works
+      field_body: |
+        <p>A bounty hunter returns to a cavern planet for a stolen specimen. One of the games that set the rules of a whole genre: one big map, abilities that open new paths, and hardly any hints.</p>
+  - key: summit_line
+    type: game
+    title: Summit Line
+    ago: 450d
+    views: 3300
+    fields:
+      field_cover: {file: images/game-summit-line.webp}
+      field_release: 2018-01-25
+      field_platforms: [PC, Nintendo Switch, PlayStation 4, Xbox One]
+      field_genres: [Platformer]
+      field_developer: Small Peak Games
+      field_publisher: Small Peak Games
+      field_body: |
+        <p>A young climber goes up a lonely mountain - and argues with her own doubts on the way. A precise platformer of hundreds of short screens, where a death costs a second and the assist mode lets you tune the difficulty to yourself.</p>
+      field_requirements: |
+        <ul><li>Processor: Intel Core i3 M380</li><li>Memory: 2 GB</li><li>Graphics: Intel HD 4000</li><li>Storage: 1.2 GB</li></ul>
+  - key: rain_precinct
+    type: game
+    title: Rain Precinct
+    ago: 420d
+    views: 2900
+    fields:
+      field_cover: {file: images/game-rain-precinct.webp}
+      field_release: 2019-10-15
+      field_platforms: [PC, PlayStation 5, PlayStation 4, Xbox Series, Xbox One, Nintendo Switch]
+      field_genres: [RPG]
+      field_developer: Grey Coat Studio
+      field_publisher: Grey Coat Studio
+      field_body: |
+        <p>A detective wakes up in a wrecked hotel room and doesn't remember even his name. A role-playing game without combat: a dozen voices argue in your head, and a murder investigation turns into a talk about the city, memory and shame.</p>
+  - key: orbit_loop
+    type: game
+    title: Orbit Loop
+    ago: 380d
+    views: 3100
+    fields:
+      field_cover: {file: images/game-orbit-loop.webp}
+      field_release: 2019-05-28
+      field_platforms: [PC, PlayStation 5, PlayStation 4, Xbox Series, Xbox One, Nintendo Switch]
+      field_genres: [Adventure, Puzzle]
+      field_developer: Pale Comet
+      field_publisher: Lumen Interactive
+      field_body: |
+        <p>A small solar system that dies every twenty minutes. The only thing that survives between the loops is what you have learned. Explore the planets and work out what happened here.</p>
+  - key: card_tower
+    type: game
+    title: Card Tower
+    ago: 360d
+    views: 2400
+    fields:
+      field_cover: {file: images/game-card-tower.webp}
+      field_release: 2019-01-23
+      field_platforms: [PC, Nintendo Switch, PlayStation 4, Xbox One]
+      field_genres: [Roguelike, Strategy]
+      field_developer: Tall Stack
+      field_publisher: Tall Stack
+      field_body: |
+        <p>A card game where the deck grows with every fight. Climb the tower, choosing your path on the map of floors, your relics and cards - and try not to lose to one greedy purchase.</p>
+  - key: silent_mariner
+    type: game
+    title: The Silent Mariner
+    ago: 340d
+    views: 1980
+    fields:
+      field_cover: {file: images/game-silent-mariner.webp}
+      field_release: 2018-10-18
+      field_platforms: [PC, Nintendo Switch, PlayStation 4, Xbox One]
+      field_genres: [Puzzle, Adventure]
+      field_developer: Harbour Ink
+      field_publisher: Harbour Ink
+      field_body: |
+        <p>1811. A merchant brig missing for years drifts back into port with nobody aboard. All that's left is a torn logbook and a sketchbook: piece together who sailed on her and what became of each of the crew.</p>
+  - key: gates_of_arlen
+    type: game
+    title: Gates of Arlen
+    ago: 200d
+    views: 4700
+    fields:
+      field_cover: {file: images/game-gates-of-arlen.webp}
+      field_release: 2023-08-03
+      field_platforms: [PC, PlayStation 5, Xbox Series]
+      field_genres: [RPG, Strategy]
+      field_developer: Tallow Studios
+      field_publisher: Tallow Studios
+      field_body: |
+        <p>A role-playing game on the rules of a tabletop game. Turn-based fights where you can push an enemy off a bridge or set spilled oil on fire, and companions who each have their own story and their own opinion of your choices.</p>
+      field_requirements: |
+        <ul><li>System: Windows 10, 64-bit</li><li>Processor: Intel i5-4690 or AMD FX 8350</li><li>Memory: 8 GB</li><li>Graphics: GTX 970 or RX 480, 4 GB</li><li>Storage: 150 GB, SSD</li></ul>
+  - key: ashen_throne
+    type: game
+    title: Ashen Throne
+    ago: 260d
+    views: 5200
+    fields:
+      field_cover: {file: images/game-ashen-throne.webp}
+      field_release: 2022-02-25
+      field_platforms: [PC, PlayStation 5, PlayStation 4, Xbox Series, Xbox One]
+      field_genres: [RPG, Action]
+      field_developer: Grey Ember
+      field_publisher: Northgate Entertainment
+      field_body: |
+        <p>An open world where every hill hides a castle, catacombs or a boss you aren't ready for yet. You can leave and come back later: the game hardly ever forbids going where you like.</p>
+  - key: shifting_keep
+    type: game
+    title: Shifting Keep
+    ago: 330d
+    views: 1640
+    fields:
+      field_cover: {file: images/game-shifting-keep.webp}
+      field_release: 2018-08-07
+      field_platforms: [PC, Nintendo Switch, PlayStation 4, Xbox One]
+      field_genres: [Roguelike, Platformer, Action]
+      field_developer: Iron Pail
+      field_publisher: Iron Pail
+      field_body: |
+        <p>A nameless prisoner wakes in an island fortress and fights the way out. Fast combat, hundreds of weapons and halls that rebuild themselves on every attempt.</p>
+  - key: neon_courier
+    type: game
+    title: Neon Courier
+    ago: 70d
+    views: 1210
+    fields:
+      field_cover: {file: images/game-neon-courier.webp}
+      field_release: -30d
+      field_platforms: [PC, PlayStation 5, Xbox Series]
+      field_genres: [Action, Racing]
+      field_developer: Night Tram Studio
+      field_publisher: Night Tram Studio
+      field_body: |
+        <p>A courier on an electric scooter delivers parcels across a neon megacity of the future. Timed deliveries, chases with rivals and a city that changes from order to order.</p>
+  - key: subway_2049
+    type: game
+    title: Subway 2049
+    ago: 30d
+    views: 520
+    fields:
+      field_cover: {file: images/game-subway-2049.webp}
+      field_release: +5d
+      field_platforms: [PC, Xbox Series]
+      field_genres: [Shooter, Horror]
+      field_developer: Tunnel Vision Games
+      field_publisher: Tunnel Vision Games
+      field_body: |
+        <p>A shooter in the abandoned underground of a huge city: a torch, three bullets and rustling round the corner. The stations make one network, and everyone picks their own route through it.</p>
+  - key: deep_harbor
+    type: game
+    title: Deep Harbor
+    ago: 60d
+    views: 870
+    fields:
+      field_cover: {file: images/game-deep-harbor.webp}
+      field_release: +12d
+      field_platforms: [PC, PlayStation 5]
+      field_genres: [Adventure, Horror]
+      field_developer: North Lighthouse Studio
+      field_publisher: North Lighthouse Studio
+      field_body: |
+        <p>A detective story about the keeper of a harbour lighthouse, where ships go missing every night. The clues are gathered by sound: rustles, horns and voices on the radio.</p>
+  - key: sky_farm
+    type: game
+    title: Cloud Farm
+    ago: 45d
+    views: 640
+    fields:
+      field_cover: {file: images/game-sky-farm.webp}
+      field_release: +40d
+      field_platforms: [Nintendo Switch, PC]
+      field_genres: [Simulation]
+      field_developer: Studio Cumulus
+      field_publisher: Studio Cumulus
+      field_body: |
+        <p>A cozy farm on islands in the sky: garden beds on the clouds, windmills and kites that carry the mail.</p>
+  - key: last_route
+    type: game
+    title: The Last Route
+    ago: 20d
+    views: 410
+    fields:
+      field_cover: {file: images/game-last-route.webp}
+      field_release: +75d
+      field_platforms: [PC, PlayStation 5, Xbox Series]
+      field_genres: [Racing]
+      field_developer: Night Tram Studio
+      field_publisher: Night Tram Studio
+      field_body: |
+        <p>Night races through an empty city on the last tram, bus and taxi. The new game from the makers of "Neon Courier".</p>
+
+  # The reviews.
+  - key: review_wild_hand
+    type: review
+    title: "Wild Hand review: the poker you can't put down"
+    author: sofa_critic
+    sticky: true
+    ago: 2d
+    views: 3120
+    fields:
+      field_game: wild_hand
+      field_verdict: masterpiece
+      field_platforms: [PC, Nintendo Switch]
+      field_image: {file: images/review-wild-hand.webp}
+      field_body: |
+        <p>Wild Hand starts as ordinary poker and in half an hour turns into the bookkeeping of madness: multipliers multiply multipliers, and a wild card that looked like rubbish suddenly turns a pair of twos into a million points.</p>
+        <h2>Rules you want to break</h2>
+        <p>Every round has three tables, the last with a condition that changes everything: cards of one suit don't count, or the hand can't be changed. Adapting to them is the game's main pleasure.</p>
+        <p>It's amazing how much depth fits into five cards. After a dozen runs you notice probabilities, not suits - and catch yourself counting the deck on the train.</p>
+      field_pros: |
+        <ul><li>Simple rules, huge depth</li><li>Hundreds of wild cards that change the strategy</li><li>A half-hour run - perfect for a break</li></ul>
+      field_cons: |
+        <ul><li>High stakes depend on luck</li><li>The music wears thin by the hundredth run</li></ul>
+    comments:
+      - author: pixel_kid
+        body: Bought it in the evening, went to bed at four in the morning. You should warn people!
+        replies:
+          - author: sofa_critic
+            body: We did - in the first paragraph.
+      - author: mkim
+        body: Which deck is best to start with?
+        replies:
+          - author: galaga_pro
+            body: The striped one - the extra discard helps a lot.
+          - author: quest_master
+            body: I'd start with the plain one, the extra hand forgives mistakes.
+      - author: joystick_dad
+        body: My son and I take turns, one run each. The best board game that isn't a board game.
+  - key: review_ember_halls
+    type: review
+    title: "Ember Halls: why death is only the beginning here"
+    author: retro_anna
+    ago: 9d
+    views: 2480
+    fields:
+      field_game: ember_halls
+      field_verdict: masterpiece
+      field_platforms: [PC, Nintendo Switch]
+      field_image: {file: images/review-ember-halls.webp}
+      field_body: |
+        <p>In most roguelikes death is a punishment. In Ember Halls it moves the story on: back at the hearth the heir learns something new, and the household reacts to how exactly he died.</p>
+        <p>The fights are fast and readable, and the spirits' blessings add up to builds you want to try again and again. The voice acting and the music are a pleasure of their own.</p>
+      field_pros: |
+        <ul><li>A story that moves with the runs</li><li>Polished combat</li><li>The best music in the genre</li></ul>
+      field_cons: |
+        <ul><li>Towards the end the biomes get predictable</li></ul>
+    comments:
+      - author: night_owl
+        body: Finished it thirty times and still hear new lines.
+      - author: speedrun_lena
+        body: The best roguelike for people who don't like roguelikes. Tested on three friends.
+  - key: review_willow_acres
+    type: review
+    title: "Willow Acres years later: still the best farm"
+    author: mkim
+    ago: 20d
+    views: 1530
+    fields:
+      field_game: willow_acres
+      field_verdict: great
+      field_platforms: [Nintendo Switch]
+      field_image: {file: images/review-willow-acres.webp}
+      field_body: |
+        <p>The updates have turned a modest farm into a huge game, but the main thing stays: there's no need to hurry. The morning starts with watering, the evening ends by the fire in town.</p>
+        <p>Co-op gave the game a second wind: one fishes, another digs in the mine, a third argues where the chicken coop should go.</p>
+      field_pros: |
+        <ul><li>A calm pace and plenty to do</li><li>Co-op for four</li></ul>
+      field_cons: |
+        <ul><li>The first seasons drag</li></ul>
+  - key: review_summit_line
+    type: review
+    title: "Summit Line: a platformer that knows how to care"
+    author: speedrun_lena
+    ago: 6d
+    views: 1960
+    fields:
+      field_game: summit_line
+      field_verdict: masterpiece
+      field_platforms: [PC, Nintendo Switch]
+      field_image: {file: images/review-summit-line.webp}
+      field_body: |
+        <p>Summit Line demands frame-perfect precision - and doesn't punish you for it. Every screen is a small puzzle, a death sends you back to its start in a second, and the death counter at the end of a chapter reads like a medal, not a reproach.</p>
+        <h2>A mountain as a metaphor</h2>
+        <p>The story of the climber and her doubts is told without preaching. The mechanics and the story say the same thing: climbing is hard but possible, and there's no shame in asking for help - that's what the assist mode is for.</p>
+      field_pros: |
+        <ul><li>Flawless controls</li><li>Fair but high difficulty</li><li>A touching story and a superb soundtrack</li></ul>
+      field_cons: |
+        <ul><li>The extra levels are for the most stubborn only</li></ul>
+    comments:
+      - author: pixel_kid
+        body: Chapter eight broke two of my gamepads. No regrets.
+        replies:
+          - author: speedrun_lena
+            body: And that's not all the feathers yet!
+  - key: review_rain_precinct
+    type: review
+    title: "Rain Precinct: a role-playing game where the main enemy is you"
+    author: quest_master
+    ago: 14d
+    views: 1710
+    fields:
+      field_game: rain_precinct
+      field_verdict: great
+      field_platforms: [PC]
+      field_image: {file: images/review-rain-precinct.webp}
+      field_body: |
+        <p>Rain Precinct has no fights, but it has a dozen voices in the detective's head. Reason suggests a theory, Bravado advises a lie, Craving asks for a drink - and any of them may turn out right.</p>
+        <p>It's a game you read. There's a lot of text, and it's excellent: funny, bitter and unexpectedly human. Failing a check here is often more interesting than passing it.</p>
+      field_pros: |
+        <ul><li>The best writing in the genre</li><li>Failure is a story too</li><li>A city you believe in</li></ul>
+      field_cons: |
+        <ul><li>A slow start</li><li>Little action for those waiting for battles</li></ul>
+  - key: review_orbit_loop
+    type: review
+    title: "Orbit Loop: a game you can finish only once"
+    author: night_owl
+    ago: 11d
+    views: 2050
+    fields:
+      field_game: orbit_loop
+      field_verdict: masterpiece
+      field_platforms: [PC, PlayStation 5]
+      field_image: {file: images/review-orbit-loop.webp}
+      field_body: |
+        <p>Orbit Loop has no new abilities, weapons or experience points. All you gain is knowledge. That's why it's so hard to write about: every detail takes a discovery away from the reader.</p>
+        <p>Let's just say that twenty minutes is a lot if you know where to fly. And that behind the patched-up little ship stands one of the best stories in games.</p>
+      field_pros: |
+        <ul><li>Discoveries you make yourself</li><li>Every planet is a puzzle of its own</li><li>An ending you'll remember</li></ul>
+      field_cons: |
+        <ul><li>Flying the ship fights you at first</li></ul>
+    comments:
+      - author: retro_anna
+        body: Thanks for no spoilers. Off to buy it.
+  - key: review_card_tower
+    type: review
+    title: "Card Tower: the deck that builds you"
+    author: galaga_pro
+    ago: 26d
+    views: 1180
+    fields:
+      field_game: card_tower
+      field_verdict: great
+      field_platforms: [PC]
+      field_image: {file: images/review-card-tower.webp}
+      field_body: |
+        <p>The main skill in Card Tower is saying no. Don't take the card that looks strong, don't go for the chest if an elite enemy stands in the way. A good deck is a thin deck.</p>
+        <p>The four characters play completely differently, and the higher difficulty levels give a reason to come back for years.</p>
+      field_pros: |
+        <ul><li>Clear rules and fair randomness</li><li>Four very different characters</li></ul>
+      field_cons: |
+        <ul><li>Modest graphics</li></ul>
+  - key: review_neon_courier
+    type: review
+    title: "\"Neon Courier\": pretty, fast and empty"
+    author: sofa_critic
+    ago: 25d
+    views: 1420
+    fields:
+      field_game: neon_courier
+      field_verdict: miss
+      field_platforms: [PC]
+      field_image: {file: images/review-neon-courier.webp}
+      field_body: |
+        <p>The first hour of "Neon Courier" promises a lot: glowing streets, music from a night radio, a scooter that's a joy to ride. By the second hour you see that the orders repeat and the city behind the neon is empty.</p>
+        <p>The chases with rivals get old fast, and the story ends just when it gets interesting. A pity: the game has a good base.</p>
+      field_pros: |
+        <ul><li>Style and music</li><li>Pleasant controls</li></ul>
+      field_cons: |
+        <ul><li>Repetitive orders</li><li>An empty open world</li><li>A short story</li></ul>
+    comments:
+      - author: joystick_dad
+        body: My son liked it, but then he's thrilled by pizza delivery in real life too.
+      - author: night_owl
+        body: I'll wait for a sale and a couple of patches.
+        replies:
+          - author: galaga_pro
+            body: The patch is already out, there's a news item about it.
+  - key: review_shifting_keep
+    type: review
+    title: "Shifting Keep: a roguelike for those who love a fight"
+    author: pixel_kid
+    ago: 33d
+    views: 990
+    fields:
+      field_game: shifting_keep
+      field_verdict: fine
+      field_platforms: [Nintendo Switch]
+      field_image: {file: images/review-shifting-keep.webp}
+      field_body: |
+        <p>The fights in Shifting Keep are among the best in the genre: fast, responsive, with hundreds of weapons. But you play the first biomes so often that by the twentieth run they turn into a routine.</p>
+      field_pros: |
+        <ul><li>Excellent combat</li><li>Lots of weapons and builds</li></ul>
+      field_cons: |
+        <ul><li>The same start of every run</li><li>Slow growth of power</li></ul>
+
+  # The news.
+  - key: news_harbor_date
+    type: news
+    title: "\"Deep Harbor\" is out in two weeks - the studio has named the date"
+    author: galaga_pro
+    ago: 5h
+    views: 640
+    fields:
+      field_topic: Announcements
+      field_tags: [releases, detective, North Lighthouse, pre-orders]
+      field_game: deep_harbor
+      field_image: {file: images/news-harbor-date.webp}
+      field_body: |
+        <p>North Lighthouse Studio has announced the release date of the detective game "Deep Harbor". It comes out on PC and PlayStation 5, and pre-orders are open.</p>
+        <p>The developers showed a new scene: the lighthouse keeper finds an empty boat and pieces together by sound what happened to the crew.</p>
+      field_source: {url: "https://example.com/deep-harbor", title: the developers' blog}
+    comments:
+      - author: night_owl
+        body: Clues by sound - sounds fresh. Waiting.
+  - key: news_subway_preload
+    type: news
+    title: "\"Subway 2049\" can be downloaded in advance"
+    author: retro_anna
+    ago: 9h
+    views: 380
+    fields:
+      field_topic: Announcements
+      field_tags: [shooters, pre-orders, releases]
+      field_game: subway_2049
+      field_image: {file: images/news-subway-preload.webp}
+      field_body: |
+        <p>Pre-loading of the shooter has opened on PC and Xbox Series. The game takes 48 GB and comes with voice acting in eight languages at launch.</p>
+  - key: news_handheld_update
+    type: news
+    title: A handheld console gets a picture-in-picture mode
+    author: galaga_pro
+    ago: 1d
+    views: 910
+    fields:
+      field_topic: Hardware
+      field_tags: [handhelds, updates, hardware]
+      field_image: {file: images/news-handheld-update.webp}
+      field_body: |
+        <p>A guide or a video can now stay in a corner of the screen while you play. The window takes a quarter or two fifths of the screen, and the sound comes from the game.</p>
+      field_source: {url: "https://example.com/handheld-update", title: the update's notes}
+  - key: news_courier_patch
+    type: news
+    title: "\"Neon Courier\" gets a big patch: new orders and a new district"
+    author: galaga_pro
+    ago: 1d6h
+    views: 560
+    fields:
+      field_topic: Updates
+      field_tags: [updates, racing]
+      field_game: neon_courier
+      field_image: {file: images/news-courier-patch.webp}
+      field_body: |
+        <p>The 4 GB patch adds a harbour district, twenty new kinds of orders and night races across the rooftops. The developers promise it's only the first of three big updates.</p>
+      field_source: {url: "https://example.com/neon-courier-patch", title: the changelog}
+  - key: news_indie_fest
+    type: news
+    title: An indie festival announces its winners
+    author: retro_anna
+    ago: 2d
+    views: 480
+    fields:
+      field_topic: Industry
+      field_tags: [festivals, indie]
+      field_image: {file: images/news-indie-fest.webp}
+      field_body: |
+        <p>The festival's main prize went to a puzzle game made by two developers over a year of evenings. The audience award went to "Cloud Farm".</p>
+  - key: news_sky_farm_demo
+    type: news
+    title: "\"Cloud Farm\" has a free demo"
+    author: mkim
+    ago: 3d
+    views: 720
+    fields:
+      field_topic: Announcements
+      field_tags: [demos, cozy games, indie]
+      field_game: sky_farm
+      field_image: {file: images/news-sky-farm-demo.webp}
+      field_body: |
+        <p>The demo has the first season: two islands, a windmill and the mail kites. The save carries over to the full game.</p>
+    comments:
+      - author: joystick_dad
+        body: My daughter has already named all the chickens. Looks like we're buying it.
+  - key: news_retro_mini
+    type: news
+    title: A mini retro console comes with thirty built-in games
+    author: retro_anna
+    ago: 4d
+    views: 1340
+    fields:
+      field_topic: Hardware
+      field_tags: [retro, hardware, nostalgia]
+      field_image: {file: images/news-retro-mini.webp}
+      field_body: |
+        <p>A small copy of a nineties console gets two wired gamepads, HDMI output and saving at any moment. The list of games will be revealed closer to launch.</p>
+    comments:
+      - author: galaga_pro
+        body: As long as the gamepads' cables are longer than last time.
+  - key: news_cup_final
+    type: news
+    title: A city fighting game tournament's final draws three thousand spectators
+    author: speedrun_lena
+    ago: 5d
+    views: 450
+    fields:
+      field_topic: Esports
+      field_tags: [esports, fighting games]
+      field_image: {file: images/news-cup-final.webp}
+      field_body: |
+        <p>The tournament was held in an exhibition hall and streamed live. The winner came back from two rounds down in the deciding match and took the cup with the last attack.</p>
+  - key: news_harbor_office
+    type: news
+    title: North Lighthouse Studio opens a second office
+    author: mkim
+    ago: 8d
+    views: 300
+    fields:
+      field_topic: Industry
+      field_tags: [North Lighthouse, indie]
+      field_image: {file: images/news-harbor-office.webp}
+      field_body: |
+        <p>The makers of "Deep Harbor" have hired twelve people and started work on their next project. The studio isn't saying what it will be yet.</p>
+  - key: news_route_trailer
+    type: news
+    title: "\"The Last Route\" shows a night track in a new trailer"
+    author: galaga_pro
+    ago: 10d
+    views: 610
+    fields:
+      field_topic: Announcements
+      field_tags: [racing, trailers]
+      field_game: last_route
+      field_image: {file: images/news-route-trailer.webp}
+      field_body: |
+        <p>A tram on wet rails, a taxi without passengers and an empty avenue: Night Tram Studio has shown the first track of its new racing game.</p>
+
+  # The videos.
+  - key: video_ember_halls_first_hour
+    type: video
+    title: "Ember Halls: the first hour without hints"
+    author: pixel_kid
+    ago: 3d
+    views: 2100
+    fields:
+      field_game: ember_halls
+      field_image: {file: images/video-ember-halls-first-hour.webp}
+      field_duration: "58:20"
+      field_body: |
+        <p>Playing from scratch on normal difficulty: the first escapes, the first blessings and the first meeting with the Warden of the stairs.</p>
+      field_chapters: |
+        <ul><li>00:00 - the hearth</li><li>06:40 - the lower halls</li><li>24:10 - the first death</li><li>41:30 - the Warden</li></ul>
+  - key: video_wild_hand_cards
+    type: video
+    title: "Wild Hand: five wild cards for your first runs"
+    author: galaga_pro
+    ago: 7d
+    views: 1650
+    fields:
+      field_game: wild_hand
+      field_image: {file: images/video-wild-hand-cards.webp}
+      field_duration: "12:40"
+      field_body: |
+        <p>Which wild cards to take when nothing is unlocked yet, and how not to lose a run at the third table.</p>
+      field_chapters: |
+        <ul><li>00:00 - introduction</li><li>01:30 - multipliers</li><li>05:10 - economy</li><li>09:20 - beginners' mistakes</li></ul>
+    comments:
+      - author: mkim
+        body: Finally beat the second table. Thanks!
+  - key: video_orbit_loop_start
+    type: video
+    title: "Orbit Loop without spoilers: where to start"
+    author: night_owl
+    ago: 12d
+    views: 980
+    fields:
+      field_game: orbit_loop
+      field_image: {file: images/video-orbit-loop-start.webp}
+      field_duration: "9:15"
+      field_body: |
+        <p>How to fly the ship, why to read the log and why you shouldn't be afraid to die. Not a single discovery given away.</p>
+  - key: video_harbor_gameplay
+    type: video
+    title: "\"Deep Harbor\": twenty minutes of gameplay"
+    author: retro_anna
+    ago: 1d
+    views: 1120
+    fields:
+      field_game: deep_harbor
+      field_image: {file: images/video-harbor-gameplay.webp}
+      field_duration: "20:04"
+      field_body: |
+        <p>A night at the lighthouse from start to end: the radio, the empty boat and the first clue by sound. Footage courtesy of the studio.</p>
+
+  # The articles.
+  - key: article_long_games
+    type: article
+    title: Why games have got so long
+    author: sofa_critic
+    ago: 4d
+    views: 1870
+    fields:
+      field_image: {file: images/article-long-games.webp}
+      field_body: |
+        <p>A hundred hours in a role-playing game was once rare; now it's the norm. We look at where long games come from and why more and more players never finish them.</p>
+        <p>Partly it's the price: a full-price game has to look "big". Partly it's open worlds, easier to fill with quests than with a story. Meanwhile short games like The Silent Mariner or Summit Line prove that ten hours are enough to be remembered forever.</p>
+    comments:
+      - author: mkim
+        body: I want games for a weekend, not for a year.
+      - author: quest_master
+        body: And I love living in a game for months. Let there be both.
+  - key: article_metroidvania
+    type: article
+    title: "The metroidvania: how one map became a genre"
+    author: retro_anna
+    ago: 16d
+    views: 1260
+    fields:
+      field_image: {file: images/article-metroidvania.webp}
+      field_body: |
+        <p>Star Vault came out in 1994 and set the rules games are still made by: a big interconnected map, locked doors, an ability that opens the way back. Lantern Deep and Shifting Keep are its direct heirs.</p>
+        <p>In this article: how a good map is built, why going back to old places isn't boring, and why the genre needs the feeling "I've been here before, but now I can do more".</p>
+  - key: article_cozy
+    type: article
+    title: Why we love farming games
+    author: joystick_dad
+    ago: 22d
+    views: 840
+    fields:
+      field_image: {file: images/article-cozy.webp}
+      field_body: |
+        <p>Nothing is urgent in cozy games: the harvest will wait, the neighbours won't take offence, and the only threat is a crow in the garden. We asked readers why they keep coming back to Willow Acres for years and gathered the most honest answers.</p>
+    comments:
+      - author: pixel_kid
+        body: Because everything works out there. Unlike life.
+  - key: article_save_systems
+    type: article
+    title: "To save or not: a short history of saving"
+    author: quest_master
+    ago: 30d
+    views: 690
+    fields:
+      field_image: {file: images/article-save-systems.webp}
+      field_body: |
+        <p>Passwords of letters and digits, a battery in the cartridge, save points and an autosave every five minutes - the way we keep our progress has always changed the way we play. Remembering how it was.</p>
+
+  # The players' blogs.
+  - key: blog_summit_line_feathers
+    type: blog
+    title: How I collected every feather in Summit Line and kept my sanity
+    author: speedrun_lena
+    ago: 1d3h
+    views: 640
+    fields:
+      field_image: {file: images/blog-summit-line-feathers.webp}
+      field_game: summit_line
+      field_tags: [guides, roguelikes]
+      field_body: |
+        <p>A hundred and fifty feathers, three weeks of evenings and one broken jump button. Here's what helped me get to the end.</p>
+        <h2>Don't chase them all at once</h2>
+        <p>The first playthrough is just the story. The feathers stick in your memory on their own: "that one hung over the spikes". The second time round you go by memory.</p>
+        <h2>Learn the downward dash</h2>
+        <p>Half of the hard feathers are taken with a diagonal dash down and a jump at the end. Practise it on an empty screen - it gets easier from there.</p>
+    comments:
+      - author: pixel_kid
+        body: Chapter eight isn't feathers, it's an endurance test.
+        replies:
+          - author: speedrun_lena
+            body: It is. But after it everything else feels like a walk.
+  - key: blog_retro_weekend
+    type: blog
+    title: "A retro weekend with my son: what worked and what didn't"
+    author: joystick_dad
+    ago: 2d5h
+    views: 410
+    fields:
+      field_image: {file: images/blog-retro-weekend.webp}
+      field_game: clockwork_crown
+      field_tags: [retro, nostalgia, co-op]
+      field_body: |
+        <p>I decided to show my son the games of my childhood. He grew up on open worlds, so I expected scepticism - and got it, but not everywhere.</p>
+        <p>Clockwork Crown unexpectedly worked: battles on the world map itself and time travel hooked him. Platformers with three lives and no saves, though, caused sincere outrage.</p>
+    comments:
+      - author: retro_anna
+        body: Three lives and no saves - now that's real horror.
+  - key: blog_wild_hand_deck
+    type: blog
+    title: "Wild Hand: my craziest deck"
+    author: mkim
+    ago: 3d8h
+    views: 780
+    fields:
+      field_image: {file: images/blog-wild-hand-deck.webp}
+      field_game: wild_hand
+      field_tags: [roguelikes, guides]
+      field_body: |
+        <p>The eighth round, a pair of sixes in hand, and the score goes past a billion. Here's how this deck came together and why it can never be repeated.</p>
+        <p>The main thing is not to be greedy in the shop: two right wild cards beat five random ones.</p>
+    comments:
+      - author: galaga_pro
+        body: A billion on a pair of sixes - screenshot or it didn't happen!
+        replies:
+          - author: mkim
+            body: The screenshot is in my profile. I still can't believe it myself.
+  - key: blog_orbit_loop_tears
+    type: blog
+    title: Orbit Loop made me cry over a spaceship
+    author: night_owl
+    ago: 5d
+    views: 520
+    fields:
+      field_image: {file: images/blog-orbit-loop-tears.webp}
+      field_game: orbit_loop
+      field_tags: [indie]
+      field_body: |
+        <p>No spoilers: this game is about curiosity and about what to do when time is running out. I spent the last half hour holding my breath.</p>
+        <p>If you haven't played it - don't read anything, just start. If you have - you know what I mean.</p>
+  - key: blog_coop_willow_acres
+    type: blog
+    title: A farm for four - a hundred days of co-op in Willow Acres
+    author: quest_master
+    ago: 8d
+    views: 360
+    fields:
+      field_image: {file: images/blog-coop-willow-acres.webp}
+      field_game: willow_acres
+      field_tags: [co-op, cozy games]
+      field_body: |
+        <p>Four people, one farm and endless arguments about where the chicken coop should go. Here's how we split the roles and what came of it.</p>
+        <p>The main lesson: put one person in charge of the chests. Otherwise the spring seeds end up in the chest with the fish.</p>
+    comments:
+      - author: sofa_critic
+        body: A chest of fish and seeds - a classic of every co-op.
+  - key: blog_ember_halls_builds
+    type: blog
+    title: Five Ember Halls builds that always work
+    author: galaga_pro
+    ago: 12d
+    views: 900
+    fields:
+      field_image: {file: images/blog-ember-halls-builds.webp}
+      field_game: ember_halls
+      field_tags: [guides, roguelikes]
+      field_body: |
+        <p>Not the best builds, but reliable ones: those I almost always finish a run with, even with bad blessings.</p>
+        <ul><li>The spear and the storm spirit - lightning all over the arena</li><li>The shield and the tide spirit - knocking enemies into walls</li><li>The bow and the moon spirit - critical shots</li><li>The fists and the oak spirit - defence and speed</li><li>The sword and the war spirit - area damage</li></ul>
+
+  # A page.
+  - key: about
+    type: page
+    title: About
+    fields:
+      field_body: |
+        <p>This is a demo site of the Kosatka engine and its Respawn theme: a game portal with news, reviews, videos and game pages, a forum and polls. Everything here is ordinary content, changed and deleted in the admin.</p>
+        <p>The games, the studios, the news and the people here are all made up for the demo; the pictures are drawn for it.</p>
+
+views:
+  - name: home
+    label: Front page
+    display_type: block
+    style: list
+    pager: true
+    page_size: 12
+    fields:
+      - {storage: field_image, image_style: game_card, link_to: content}
+      - {builtin: content_type}
+      - {storage: field_verdict}
+      - {builtin: title, link_to: content}
+      - {builtin: created_at, date_format: medium}
+      - {storage: field_body, trim_length: 200}
+      - {builtin: comment_count, show_label: true}
+    filters:
+      - {builtin: status, operator: eq, value: "1"}
+      - {builtin: promote, operator: eq, value: "1"}
+      - {builtin: on_moderation, operator: eq, value: "0"}
+    sorts:
+      - {builtin: sticky, direction: desc}
+      - {builtin: created_at, direction: desc}
+  - name: reviews
+    label: Reviews
+    display_type: page
+    path: reviews
+    style: grid
+    grid_columns: 3
+    pager: true
+    page_size: 12
+    fields:
+      - {storage: field_image, image_style: game_card, link_to: content}
+      - {storage: field_verdict}
+      - {builtin: title, link_to: content}
+      - {storage: field_platforms, tag_format: plain}
+      - {builtin: comment_count, show_label: true}
+    filters:
+      - {builtin: content_type, operator: in, value: review}
+      - {builtin: status, operator: eq, value: "1"}
+      - {storage: field_platforms, operator: eq, exposed: platform, exposed_label: Platform}
+      - {storage: field_verdict, operator: in, exposed: verdict, exposed_label: Verdict}
+    sorts:
+      - {builtin: created_at, direction: desc}
+  - name: news
+    label: News
+    display_type: page
+    path: news
+    style: list
+    pager: true
+    page_size: 15
+    fields:
+      - {storage: field_image, image_style: game_card, link_to: content}
+      - {storage: field_topic, tag_format: badges}
+      - {builtin: title, link_to: content}
+      - {builtin: created_at, date_format: medium}
+      - {storage: field_body, trim_length: 160}
+    filters:
+      - {builtin: content_type, operator: in, value: news}
+      - {builtin: status, operator: eq, value: "1"}
+      - {storage: field_topic, operator: eq, exposed: topic, exposed_label: Topic}
+    sorts:
+      - {builtin: created_at, direction: desc}
+  - name: videos
+    label: Videos
+    display_type: page
+    path: video
+    style: grid
+    grid_columns: 3
+    pager: true
+    page_size: 12
+    fields:
+      - {storage: field_image, image_style: game_card, link_to: content}
+      - {builtin: title, link_to: content}
+      - {storage: field_duration}
+      - {builtin: view_count, show_label: true}
+    filters:
+      - {builtin: content_type, operator: in, value: video}
+      - {builtin: status, operator: eq, value: "1"}
+    sorts:
+      - {builtin: created_at, direction: desc}
+  - name: articles
+    label: Articles
+    display_type: page
+    path: articles
+    style: list
+    pager: true
+    page_size: 12
+    fields:
+      - {storage: field_image, image_style: game_card, link_to: content}
+      - {builtin: title, link_to: content}
+      - {builtin: author}
+      - {builtin: created_at, date_format: medium}
+      - {storage: field_body, trim_length: 200}
+    filters:
+      - {builtin: content_type, operator: in, value: article}
+      - {builtin: status, operator: eq, value: "1"}
+    sorts:
+      - {builtin: created_at, direction: desc}
+  - name: games
+    label: Games
+    display_type: page
+    path: games
+    style: grid
+    grid_columns: 4
+    pager: true
+    page_size: 24
+    fields:
+      - {storage: field_cover, image_style: game_cover, link_to: content}
+      - {builtin: title, link_to: content}
+      - {builtin: ratings.rating, params: {look: full}}
+      - {storage: field_release, date_format: medium}
+      - {storage: field_genres, tag_format: plain}
+    filters:
+      - {builtin: content_type, operator: in, value: game}
+      - {builtin: status, operator: eq, value: "1"}
+      - {storage: field_platforms, operator: eq, exposed: platform, exposed_label: Platform}
+      - {storage: field_genres, operator: eq, exposed: genre, exposed_label: Genre}
+    sorts:
+      - {builtin: ratings.weighted, direction: desc, params: {min_votes: "3"}, exposed: rating, exposed_label: By rating}
+      - {storage: field_release, direction: desc, exposed: new, exposed_label: Newest first}
+      - {builtin: title, direction: asc, exposed: title, exposed_label: By title}
+      - {builtin: title, direction: asc}
+  - name: releases
+    label: Release calendar
+    display_type: page
+    path: releases
+    style: list
+    pager: true
+    page_size: 30
+    group_by: field_release
+    group_date_format: month
+    fields:
+      - {storage: field_cover, image_style: game_cover, link_to: content}
+      - {builtin: title, link_to: content}
+      - {storage: field_release, date_format: medium}
+      - {storage: field_platforms, tag_format: plain}
+    filters:
+      - {builtin: content_type, operator: in, value: game}
+      - {builtin: status, operator: eq, value: "1"}
+      - {storage: field_release, operator: not_ended}
+    sorts:
+      - {storage: field_release, direction: asc}
+  - name: game_materials
+    label: About the game
+    display_type: attachment
+    attach_types: [game]
+    attach_title: About the game
+    style: list
+    page_size: 20
+    fields:
+      - {builtin: content_type}
+      - {builtin: title, link_to: content}
+      - {builtin: created_at, date_format: medium}
+    filters:
+      - {storage: field_game, operator: related_to_current, contextual: true}
+      - {builtin: status, operator: eq, value: "1"}
+    sorts:
+      - {builtin: created_at, direction: desc}
+  - name: popular
+    label: Popular
+    display_type: block
+    style: list
+    page_size: 5
+    fields:
+      - {builtin: title, link_to: content}
+      - {builtin: view_count, show_label: true}
+    filters:
+      - {builtin: content_type, operator: in, value: "review,news,video,article"}
+      - {builtin: status, operator: eq, value: "1"}
+    sorts:
+      - {builtin: views, direction: desc}
+  - name: blogs
+    label: Blogs
+    display_type: page
+    path: blogs
+    style: list
+    pager: true
+    page_size: 12
+    header: "<p>Written by players: impressions, stories, guides. Any registered member can start a blog - \"Create content\" in the user menu.</p>"
+    fields:
+      - {storage: field_image, image_style: game_card, link_to: content}
+      - {builtin: title, link_to: content}
+      - {builtin: author, link_to: author}
+      - {builtin: created_at, date_format: medium}
+      - {storage: field_body, trim_length: 180}
+      - {storage: field_tags, tag_format: plain}
+      - {builtin: comment_count, show_label: true}
+    filters:
+      - {builtin: content_type, operator: in, value: blog}
+      - {builtin: status, operator: eq, value: "1"}
+    sorts:
+      - {builtin: created_at, direction: desc}
+  - name: user_blog
+    label: Blog
+    display_type: user_tab
+    tab_path: blog
+    style: list
+    pager: true
+    page_size: 10
+    fields:
+      - {storage: field_image, image_style: game_card, link_to: content}
+      - {builtin: title, link_to: content}
+      - {builtin: created_at, date_format: medium}
+      - {storage: field_body, trim_length: 180}
+    filters:
+      - {builtin: content_type, operator: in, value: blog}
+      - {builtin: status, operator: eq, value: "1"}
+      - {builtin: created_by, operator: eq, contextual: true}
+    sorts:
+      - {builtin: created_at, direction: desc}
+  - name: blogs_latest
+    label: Players' blogs
+    display_type: block
+    style: list
+    page_size: 4
+    fields:
+      - {builtin: title, link_to: content}
+      - {builtin: author}
+    filters:
+      - {builtin: content_type, operator: in, value: blog}
+      - {builtin: status, operator: eq, value: "1"}
+    sorts:
+      - {builtin: created_at, direction: desc}
+  - name: top_games
+    label: Top games
+    display_type: block
+    style: list
+    page_size: 5
+    fields:
+      - {builtin: title, link_to: content}
+      - {builtin: ratings.rating, params: {look: average}}
+    filters:
+      - {builtin: content_type, operator: in, value: game}
+      - {builtin: status, operator: eq, value: "1"}
+    sorts:
+      - {builtin: ratings.weighted, direction: desc, params: {min_votes: "3"}}
+  - name: upcoming
+    label: Coming soon
+    display_type: block
+    style: list
+    page_size: 5
+    fields:
+      - {builtin: title, link_to: content}
+      - {storage: field_release, date_format: medium}
+    filters:
+      - {builtin: content_type, operator: in, value: game}
+      - {builtin: status, operator: eq, value: "1"}
+      - {storage: field_release, operator: not_ended}
+    sorts:
+      - {storage: field_release, direction: asc}
+
+blocks:
+  - {region: sidebar, view: popular, title: Popular, show_title: true}
+  - {region: sidebar, view: upcoming, title: Coming soon, show_title: true}
+  - {region: sidebar, plugin: last_comments, title: Talked about}
+  - {region: sidebar, plugin: tag_cloud, vocabulary: genres, title: Genres, show_title: true, config: {count: "12"}}
+  - {region: sidebar, view: blogs_latest, title: Players' blogs, show_title: true, visibility: homepage}
+  - {region: sidebar, view: top_games, title: Top games, show_title: true, types: [game]}
+  - {region: sidebar, plugin: tag_cloud, vocabulary: tags, title: Tags, show_title: true, types: [news, blog], config: {count: "20"}}
+
+menus:
+  - name: main
+    links:
+      - {title: News, view: news}
+      - {title: Reviews, view: reviews}
+      - {title: Videos, view: videos}
+      - {title: Articles, view: articles}
+      - {title: Blogs, view: blogs}
+      - {title: Games, view: games}
+      - {title: Releases, view: releases}
+  - name: footer
+    label: Footer
+    region: footer
+    links:
+      - {title: About, node: about}
+
+# The roles' permissions beyond the starter's: members keep blogs.
+permissions:
+  user: [create blog content, edit own blog content, use_text_format_basic_html]
+
+# The modules' demo content, in the format of their demo/<lang>.json. The
+# modules are installed with the set (app install without -modules); a
+# site built without the forum module (a module of its own repository)
+# installs without its part.
+modules:
+  forum:
+    vocabulary: Forum
+    menu: Forum
+    categories:
+      - name: Games
+        description: All about games, what you're playing.
+        sections:
+          - {name: Talking games, description: "Impressions, arguments and recommendations."}
+          - {name: Help me through, description: "Stuck? Ask - you'll get a hint without needless spoilers."}
+      - name: Hardware
+        description: PCs, consoles, gamepads and everything people play on.
+        sections:
+          - {name: PCs and consoles, description: "Builds, upgrades, choosing a console."}
+      - name: Off-topic
+        description: Talk that isn't about games. Well, almost.
+        sections:
+          - {name: Anything goes, description: "Films, books, life."}
+    topics:
+      - section: Talking games
+        title: The forum's rules
+        author: galaga_pro
+        sticky: true
+        views: 1200
+        body: "<p>Hide spoilers behind a warning, treat each other like people. Questions about getting through a game go to \"Help me through\".</p>"
+        replies: []
+      - section: Help me through
+        title: "Orbit Loop: I can't get inside the comet"
+        author: joystick_dad
+        views: 340
+        body: "<p>I fly up, circle around it and can't see the way in. Just a hint, not the answer!</p>"
+        replies:
+          - author: night_owl
+            body: "A hint: pay attention to when exactly you get there."
+            replies:
+              - author: joystick_dad
+                body: Got it! Thanks for not giving it away.
+      - section: Talking games
+        title: The best roguelike for a beginner?
+        author: mkim
+        views: 520
+        body: "<p>I'd like to try the genre but I'm afraid I'll quit after an hour. Where do I start?</p>"
+        replies:
+          - author: retro_anna
+            body: Ember Halls - dying moves the story on, it's hard to quit.
+          - author: galaga_pro
+            body: Wild Hand if you like cards. Card Tower if you like to think.
+            replies:
+              - author: mkim
+                body: Took Wild Hand. Looks like a mistake - three nights without sleep already.
+      - section: PCs and consoles
+        title: A handheld or a laptop for travel?
+        author: speedrun_lena
+        views: 410
+        body: "<p>I travel by train a lot. What's handier for playing on the road?</p>"
+        replies:
+          - author: pixel_kid
+            body: A handheld. A laptop on your knees in a compartment is not much fun.
+          - author: quest_master
+            body: Depends on the games. Strategy on a handheld is pain.
+      - section: Anything goes
+        title: Which soundtracks do you listen to outside games?
+        author: sofa_critic
+        views: 260
+        body: "<p>Half of my player is music from games. Share yours.</p>"
+        replies:
+          - author: speedrun_lena
+            body: Summit Line. Great to work to.
+          - author: night_owl
+            body: Orbit Loop, but only when I'm sad.
+  polls:
+    title: What are you playing this weekend?
+    description: "<p>Something new, an old love or a break from games - tell us.</p>"
+    options:
+      - Something new
+      - An old favourite
+      - Still Wild Hand
+      - Taking a break from games
+    votes: {pixel_kid: 2, retro_anna: 1, galaga_pro: 2, sofa_critic: 0, night_owl: 1, mkim: 2, speedrun_lena: 0, quest_master: 1, joystick_dad: 3}
+    comments:
+      - author: joystick_dad
+        body: Taking a break means watching the kids play.
+    menu: Poll
+    block: Poll of the week
+  galleries:
+    node: review_orbit_loop
+    title: The solar system on screen
+    description: Shots from our playthrough - no spoilers.
+    pictures:
+      - {title: The campfire at the landing, file: images/gallery-campfire.webp}
+      - {title: The observatory, file: images/gallery-observatory.webp}
+      - {title: The cracked planet, file: images/gallery-planet.webp}
+      - {title: The storm ocean, file: images/gallery-ocean.webp}
+      - {title: The drifting moon, file: images/gallery-moon.webp}
+      - {title: The ship taking off, file: images/gallery-launch.webp}
+  ratings:
+    types: [game]
+    votes:
+      - {node: ember_halls, scores: {pixel_kid: 5, retro_anna: 5, galaga_pro: 5, sofa_critic: 4, night_owl: 5, mkim: 4, speedrun_lena: 5}}
+      - {node: wild_hand, scores: {pixel_kid: 5, galaga_pro: 5, sofa_critic: 5, mkim: 5, quest_master: 4, joystick_dad: 4}}
+      - {node: lantern_deep, scores: {retro_anna: 5, galaga_pro: 4, night_owl: 5, speedrun_lena: 5, pixel_kid: 4}}
+      - {node: willow_acres, scores: {mkim: 5, joystick_dad: 5, quest_master: 4, sofa_critic: 4}}
+      - {node: clockwork_crown, scores: {retro_anna: 5, joystick_dad: 5, quest_master: 5}}
+      - {node: star_vault, scores: {retro_anna: 5, galaga_pro: 4}}
+      - {node: summit_line, scores: {speedrun_lena: 5, pixel_kid: 5, night_owl: 4, mkim: 4}}
+      - {node: rain_precinct, scores: {quest_master: 5, sofa_critic: 4, night_owl: 4}}
+      - {node: orbit_loop, scores: {night_owl: 5, retro_anna: 5, joystick_dad: 4, sofa_critic: 5}}
+      - {node: card_tower, scores: {galaga_pro: 5, mkim: 4, quest_master: 4}}
+      - {node: silent_mariner, scores: {night_owl: 5, sofa_critic: 4, retro_anna: 4}}
+      - {node: gates_of_arlen, scores: {quest_master: 5, sofa_critic: 5, joystick_dad: 4, mkim: 5, galaga_pro: 4}}
+      - {node: ashen_throne, scores: {galaga_pro: 5, pixel_kid: 4, night_owl: 4, speedrun_lena: 3}}
+      - {node: shifting_keep, scores: {pixel_kid: 4, speedrun_lena: 4, galaga_pro: 3}}
+      - {node: neon_courier, scores: {sofa_critic: 2, joystick_dad: 3, night_owl: 2}}
+  forms:
+    title: Suggest a story
+    description: Know something we don't? Tell us - we'll check it and write about it.
+    confirmation: Thank you! The editors will read it and reply by e-mail.
+    submit: Send
+    elements:
+      - {name: name, type: text, label: Name, required: true}
+      - {name: email, type: email, label: E-mail, required: true}
+      - {name: topic, type: select, label: Topic, required: true, options: [Announcement, Hardware, Esports, Other]}
+      - {name: link, type: text, label: Link to the source}
+      - {name: message, type: textarea, label: What happened, required: true}
+    submissions:
+      - author: pixel_kid
+        values: {name: Pixel, email: pixel_kid@example.com, topic: Announcement, link: "https://example.com/rumor", message: "They say \"Deep Harbor\" will have a mode for two."}
+      - author: speedrun_lena
+        values: {name: Lena, email: speedrun_lena@example.com, topic: Esports, message: "A Summit Line speedrun race on Saturday, come and watch."}
+    menu: Suggest a story
