@@ -1031,11 +1031,23 @@ body:has(> .site-header) > .r-footer {
     text-decoration: underline;
 }
 
+/* The footer_bottom region in a row: the first block (the copyright)
+   on the left, the others (Powered by) on the right. */
 .r-footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: .5rem 1.5rem;
     margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px solid #2c2f37;
     color: #8a8f9c;
+}
+
+.r-footer-bottom .block,
+.r-footer-bottom p {
+    margin: 0;
 }
 
 .r-footer-bottom .site-footer-credit {

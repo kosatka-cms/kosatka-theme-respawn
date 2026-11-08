@@ -77,7 +77,9 @@ On *Appearance → Respawn → Settings*:
 The engine's regions - *Header*, *Sidebar*, *Content top*, *Content
 bottom*, *Inside content*, *Footer*, *Footer bottom line* - so blocks
 placed for another theme stay where they are. A new site gets the
-copyright block in *Footer bottom line*.
+copyright block (on the left) and a "Powered by Kosatka CMS" block (on
+the right) in *Footer bottom line*; both are ordinary blocks to change
+or remove on *Blocks*.
 
 ## Fonts
 
